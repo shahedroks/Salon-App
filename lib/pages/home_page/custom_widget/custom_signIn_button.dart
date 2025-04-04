@@ -2,7 +2,18 @@ import 'package:flutter/material.dart';
 
 class CustomSigninButton extends StatelessWidget {
   String? text;
-  CustomSigninButton({super.key, this.text});
+  Color? contenerColor;
+  Color? textColor;
+  String? image;
+  bool showAvater;
+  CustomSigninButton({
+    super.key,
+    this.text,
+    this.contenerColor,
+    this.textColor,
+    this.image,
+    this.showAvater = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +24,18 @@ class CustomSigninButton extends StatelessWidget {
       height: sizeHeight * 0.06,
       width: sizeWidth,
       decoration: BoxDecoration(
-        color: Color(0xff156778),
+        border: Border.all(width: 1, color: Color(0xff156778)),
+        color: contenerColor,
         borderRadius: BorderRadius.circular(25),
       ),
-      child: Center(
-        child: Text(text!, style: TextStyle(fontSize: 20, color: Colors.white)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (showAvater)
+            CircleAvatar(child: Image.asset("$image"), radius: 10),
+          SizedBox(width: showAvater ? sizeWidth * 0.03 : 0),
+          Text(text!, style: TextStyle(fontSize: 18, color: textColor)),
+        ],
       ),
     );
   }

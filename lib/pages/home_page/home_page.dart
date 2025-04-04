@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:selon/pages/home_page/custom_function/email_checker.dart';
 import 'package:selon/pages/home_page/custom_function/password_check.dart';
+import 'package:selon/pages/home_page/custom_widget/custom_divider.dart';
 import 'package:selon/pages/home_page/custom_widget/custom_signIn_button.dart';
 import 'package:selon/pages/home_page/custom_widget/custom_text_form_feild.dart';
 
@@ -67,8 +68,33 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(height: sizeHeight * 0.05),
-            CustomSigninButton(text: "Sign In"),
-            CustomSigninButton(),
+            CustomSigninButton(
+              text: "Sign In",
+              contenerColor: Color(0xff156778),
+              textColor: Colors.white,
+              showAvater: false,
+            ),
+            SizedBox(height: sizeHeight * 0.03),
+            CustomDivider(),
+            SizedBox(height: sizeHeight * 0.03),
+            CustomSigninButton(
+              textColor: Color(0xff156778),
+              text: "Sign In With Google",
+              contenerColor: Colors.white,
+              image: "assets/Google.png",
+            ),
+            SizedBox(height: sizeHeight * 0.03),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Don’t have an account?"),
+                SizedBox(width: sizeWidth * 0.02),
+                Text(
+                  "Join Now",
+                  style: TextStyle(color: Color(0xff156778), fontSize: 15),
+                ),
+              ],
+            ),
           ],
         ),
       ),

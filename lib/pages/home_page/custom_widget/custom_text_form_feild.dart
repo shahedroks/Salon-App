@@ -52,11 +52,13 @@ class CustomTextFormFeild extends StatelessWidget {
           suffixIcon: Icon(suffixIcon),
 
           // enabledBorder: OutlineInputBorder(
-          //     borderRadius: BorderRadius.all(Radius.circular(10)),
-          //     borderSide: BorderSide(color: Colors.grey)),
-          // focusedBorder: OutlineInputBorder(
-          //     borderSide: BorderSide(color: Colors.black),
-          //     borderRadius: BorderRadius.all(Radius.circular(10))),
+          //   borderRadius: BorderRadius.all(Radius.circular(25)),
+          //   borderSide: BorderSide(color: Colors.grey.shade400),
+          // ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25)),
+            borderSide: BorderSide(color: Colors.grey.shade400),
+          ),
           hintText: hintText,
           labelText: labelText,
         ),
