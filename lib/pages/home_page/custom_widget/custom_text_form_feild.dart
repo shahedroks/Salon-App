@@ -5,6 +5,8 @@ class CustomTextFormFeild extends StatelessWidget {
   String? labelText;
   var controler;
   IconData prefixIcon;
+  IconData suffixIcon;
+  final String? Function(String?)? validator;
   // bool passwordVisible;
   // bool isVisibleIconShow;
   // bool isObscureText;
@@ -17,6 +19,9 @@ class CustomTextFormFeild extends StatelessWidget {
     this.labelText,
     this.controler,
     required this.prefixIcon,
+    required this.suffixIcon,
+    required this.validator,
+
     // required this.valitation,
     // required this.isVisibleIconShow,
     // required this.passIcon,
@@ -29,18 +34,22 @@ class CustomTextFormFeild extends StatelessWidget {
     final sizeHeight = MediaQuery.of(context).size.height;
     return Container(
       height: sizeHeight * 0.06,
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      width: sizeWidth,
+      margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.03),
       child: TextFormField(
         // validator: ,
         keyboardType: TextInputType.text,
         controller: controler,
+        validator: validator,
         decoration: InputDecoration(
           filled: true,
+
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(25),
           ),
           prefixIcon: Icon(prefixIcon),
+          suffixIcon: Icon(suffixIcon),
 
           // enabledBorder: OutlineInputBorder(
           //     borderRadius: BorderRadius.all(Radius.circular(10)),
