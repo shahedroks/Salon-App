@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:selon/pages/home_page/custom_function/email_checker.dart';
-import 'package:selon/pages/home_page/custom_function/password_check.dart';
-import 'package:selon/pages/home_page/custom_widget/custom_divider.dart';
-import 'package:selon/pages/home_page/custom_widget/custom_signIn_button.dart';
-import 'package:selon/pages/home_page/custom_widget/custom_text_form_feild.dart';
+import 'package:selon/pages/signIn_page/custom_widget/custom_text_form_feild.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+import 'custom_function/email_checker.dart';
+import 'custom_function/password_check.dart';
+import 'custom_widget/custom_divider.dart';
+import 'custom_widget/custom_signIn_button.dart';
+
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
+bool obscureText = true;
+bool suffixIcon = false;
 TextEditingController email = TextEditingController();
+TextEditingController password = TextEditingController();
 final GlobalKey<FormState> isFormKey = GlobalKey<FormState>();
 
-class _HomePageState extends State<HomePage> {
+class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     final sizeWidth = MediaQuery.of(context).size.width;
@@ -40,24 +44,35 @@ class _HomePageState extends State<HomePage> {
                 "Glad to meet you again!, please login to use the app..",
               ),
             ),
-            SizedBox(height: sizeHeight * 0.3),
+            SizedBox(height: sizeHeight * 0.2),
             CustomTextFormFeild(
-              suffixIcon: Icons.remove_red_eye,
+              // suffixIcon: null,
+              obscureText: false,
               hintText: "Email",
               controler: email,
-              labelText: "Emial",
+              // labelText: "Emial",
               prefixIcon: Icons.email,
               validator: (value) => onEmailChecker(value),
+              onPressed: () {},
             ),
             SizedBox(height: sizeHeight * 0.02),
             CustomTextFormFeild(
               validator: (value) => onPasswordChecker(value),
-              suffixIcon: Icons.remove_red_eye,
+              suffixIcon: suffixIcon ? Icons.visibility : Icons.visibility_off,
+
               hintText: "Password",
-              controler: email,
-              labelText: "Password",
+              controler: password,
+              // labelText: "Password",
               prefixIcon: Icons.lock,
+              obscureText: obscureText,
+              onPressed: () {
+                setState(() {
+                  suffixIcon = !suffixIcon;
+                  obscureText = !obscureText;
+                });
+              },
             ),
+
             Container(
               padding: EdgeInsets.symmetric(vertical: sizeHeight * 0.01),
               margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.05),
@@ -69,6 +84,11 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: sizeHeight * 0.05),
             CustomSigninButton(
+              signIn: () {
+                if (isFormKey.currentState!.validate()) {
+                  Navigator.pushNamed(context, "/users_home_page");
+                }
+              },
               text: "Sign In",
               contenerColor: Color(0xff156778),
               textColor: Colors.white,

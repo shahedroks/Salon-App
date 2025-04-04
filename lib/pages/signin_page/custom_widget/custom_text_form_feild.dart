@@ -5,11 +5,13 @@ class CustomTextFormFeild extends StatelessWidget {
   String? labelText;
   var controler;
   IconData prefixIcon;
-  IconData suffixIcon;
+  IconData? suffixIcon;
+  bool obscureText;
   final String? Function(String?)? validator;
+  late VoidCallback? onPressed;
   // bool passwordVisible;
   // bool isVisibleIconShow;
-  // bool isObscureText;
+
   // final VoidCallback passIcon;
   // final VoidCallback valitation;
 
@@ -19,13 +21,14 @@ class CustomTextFormFeild extends StatelessWidget {
     this.labelText,
     this.controler,
     required this.prefixIcon,
-    required this.suffixIcon,
+    this.suffixIcon,
     required this.validator,
+    required this.onPressed,
 
     // required this.valitation,
     // required this.isVisibleIconShow,
     // required this.passIcon,
-    // required this.isObscureText
+    required this.obscureText,
   });
 
   @override
@@ -33,12 +36,13 @@ class CustomTextFormFeild extends StatelessWidget {
     final sizeWidth = MediaQuery.of(context).size.width;
     final sizeHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: sizeHeight * 0.06,
+      // height: sizeHeight * 0.06,
       width: sizeWidth,
       margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.03),
       child: TextFormField(
         // validator: ,
         keyboardType: TextInputType.text,
+        obscureText: obscureText,
         controller: controler,
         validator: validator,
         decoration: InputDecoration(
@@ -49,16 +53,19 @@ class CustomTextFormFeild extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
           ),
           prefixIcon: Icon(prefixIcon),
-          suffixIcon: Icon(suffixIcon),
+          suffixIcon:
+              suffixIcon != null
+                  ? IconButton(onPressed: onPressed!, icon: Icon(suffixIcon))
+                  : null,
 
           // enabledBorder: OutlineInputBorder(
           //   borderRadius: BorderRadius.all(Radius.circular(25)),
           //   borderSide: BorderSide(color: Colors.grey.shade400),
           // ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25)),
-            borderSide: BorderSide(color: Colors.grey.shade400),
-          ),
+          // focusedBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius.all(Radius.circular(25)),
+          //   borderSide: BorderSide(color: Colors.grey.shade400),
+          // ),
           hintText: hintText,
           labelText: labelText,
         ),
