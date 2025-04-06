@@ -19,3 +19,8 @@ subprojects {
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
+plugins {
+    id("com.android.application") version "8.7.0" apply false
+    id("com.google.gms.google-services") version "4.3.13" apply false
+    // অন্যান্য প্লাগিনগুলি এখানে
+}
