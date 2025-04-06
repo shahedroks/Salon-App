@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:selon/pages/signIn_page/custom_widget/custom_text_form_feild.dart';
-
-import 'custom_function/email_checker.dart';
-import 'custom_function/password_check.dart';
+import 'package:selon/pages/signin_page/custom_function/checker_controler.dart';
+import 'package:selon/pages/signin_page/custom_function/users_controler.dart';
 import 'custom_widget/custom_divider.dart';
 import 'custom_widget/custom_signIn_button.dart';
 
@@ -12,9 +12,12 @@ class SignInPage extends StatefulWidget {
   @override
   State<SignInPage> createState() => _SignInPageState();
 }
-
 bool obscureText = true;
 bool suffixIcon = false;
+
+Checker checker =Checker();
+Users users = Users();
+
 TextEditingController email = TextEditingController();
 TextEditingController password = TextEditingController();
 final GlobalKey<FormState> isFormKey = GlobalKey<FormState>();
@@ -53,12 +56,12 @@ class _SignInPageState extends State<SignInPage> {
                 controler: email,
                 // labelText: "Emial",
                 prefixIcon: Icons.email,
-                validator: (value) => onEmailChecker(value),
+                validator: (value) => checker.onEmailChecker(value),
                 onPressed: () {},
               ),
               SizedBox(height: sizeHeight * 0.02),
               CustomTextFormFeild(
-                validator: (value) => onPasswordChecker(value),
+                validator: (value) => checker.onPasswordChecker(value),
                 suffixIcon: suffixIcon ? Icons.visibility : Icons.visibility_off,
           
                 hintText: "Password",
@@ -87,7 +90,13 @@ class _SignInPageState extends State<SignInPage> {
               CustomSigninButton(
                 signIn: () {
                   if (isFormKey.currentState!.validate()) {
-                    Navigator.pushNamed(context, "/users_home_page");
+                    users.signinAuth(email.text,password.text, context);
+                    // if(users == true){
+                    //   print("ok");
+                    //   Navigator.pushNamed(context, "/users_home_page");
+                    // }else {
+                    //   print("error loging");
+                    // }
                   }
                 },
                 text: "Sign In",
