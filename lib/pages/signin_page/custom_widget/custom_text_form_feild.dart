@@ -4,7 +4,7 @@ class CustomTextFormFeild extends StatelessWidget {
   String? hintText;
   String? labelText;
   var controler;
-  IconData prefixIcon;
+  IconData? prefixIcon;
   IconData? suffixIcon;
   bool obscureText;
   final String? Function(String?)? validator;
@@ -20,7 +20,7 @@ class CustomTextFormFeild extends StatelessWidget {
     this.hintText,
     this.labelText,
     this.controler,
-    required this.prefixIcon,
+    this.prefixIcon,
     this.suffixIcon,
     required this.validator,
     required this.onPressed,

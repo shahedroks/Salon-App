@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:selon/pages/home_page/users_home_page.dart';
 import 'package:selon/pages/signIn_page/signin_page.dart';
 import 'package:selon/pages/signin_page/state_management/bloc/signin_bloc.dart';
+import 'package:selon/pages/signup_page/signup_page.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         initialRoute: "/",
         routes: {
-          "/": (context) => SignInPage(),
+          "/": (context) => SignUpPage(),
           "/users_home_page": (context) => UsersHomePage(),  // users_home_page
         },
       ),

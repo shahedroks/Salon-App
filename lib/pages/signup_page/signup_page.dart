@@ -7,11 +7,11 @@ import 'package:selon/pages/signin_page/custom_function/users_controler.dart';
 
 import '../signIn_page/custom_widget/custom_divider.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 bool obscureText = true;
 bool suffixIcon = false;
@@ -19,11 +19,13 @@ bool suffixIcon = false;
 Checker checker =Checker();
 Users users = Users();
 
+TextEditingController name = TextEditingController();
 TextEditingController email = TextEditingController();
+TextEditingController number = TextEditingController();
 TextEditingController password = TextEditingController();
 final GlobalKey<FormState> isFormKey = GlobalKey<FormState>();
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final sizeWidth = MediaQuery.of(context).size.width;
@@ -49,14 +51,34 @@ class _SignInPageState extends State<SignInPage> {
                   "Glad to meet you again!, please login to use the app..",
                 ),
               ),
-              SizedBox(height: sizeHeight * 0.2),
+              SizedBox(height: sizeHeight * 0.15),
               CustomTextFormFeild(
+                // suffixIcon: null,
+                obscureText: false,
+                hintText: "Name",
+                controler: name,
+                // labelText: "Emial",
+                prefixIcon: Icons.person,
+                validator: (value) => checker.onEmailChecker(value),
+                onPressed: () {},
+              ),
+              SizedBox(height: sizeHeight * 0.02), CustomTextFormFeild(
                 // suffixIcon: null,
                 obscureText: false,
                 hintText: "Email",
                 controler: email,
                 // labelText: "Emial",
                 prefixIcon: Icons.email,
+                validator: (value) => checker.onEmailChecker(value),
+                onPressed: () {},
+              ),
+              SizedBox(height: sizeHeight * 0.02), CustomTextFormFeild(
+                // suffixIcon: null,
+                obscureText: false,
+                hintText: "Number",
+                controler: number,
+                // labelText: "Emial",
+                prefixIcon: Icons.numbers,
                 validator: (value) => checker.onEmailChecker(value),
                 onPressed: () {},
               ),
@@ -78,18 +100,19 @@ class _SignInPageState extends State<SignInPage> {
                 },
               ),
 
-              Container(
-                padding: EdgeInsets.symmetric(vertical: sizeHeight * 0.01),
-                margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.05),
-                alignment: Alignment.topRight,
-                child: Text(
-                  "Forgot Password",
-                  style: TextStyle(color: Color(0xff156778)),
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.symmetric(vertical: sizeHeight * 0.01),
+              //   margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.05),
+              //   alignment: Alignment.topRight,
+              //   child: Text(
+              //     "Forgot Password",
+              //     style: TextStyle(color: Color(0xff156778)),
+              //   ),
+              // ),
               SizedBox(height: sizeHeight * 0.05),
               CustomSigninButton(
-                signIn: () {
+                signIn: ()
+                {
                   if (isFormKey.currentState!.validate()) {
                     users.signinAuth(email.text,password.text, context);
                     // if(users == true){
@@ -100,7 +123,7 @@ class _SignInPageState extends State<SignInPage> {
                     // }
                   }
                 },
-                text: "Sign In",
+                text: "Sign Up",
                 contenerColor: Color(0xff156778),
                 textColor: Colors.white,
                 showAvater: false,
