@@ -1,22 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:selon/pages/signIn_page/custom_widget/custom_signIn_button.dart';
 import 'package:selon/pages/signIn_page/custom_widget/custom_text_form_feild.dart';
-import 'package:selon/pages/signin_page/custom_function/checker_controler.dart';
-import 'package:selon/pages/signin_page/custom_function/users_controler.dart';
+import 'package:selon/pages/sign_related_page/utils/checker_controler.dart';
+import 'package:selon/pages/sign_related_page/utils/users_controler.dart';
 
 import '../signIn_page/custom_widget/custom_divider.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
-
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
+
 bool obscureText = true;
 bool suffixIcon = false;
 
-Checker checker =Checker();
+Checker checker = Checker();
 Users users = Users();
 
 TextEditingController name = TextEditingController();
@@ -62,7 +61,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 validator: (value) => checker.onEmailChecker(value),
                 onPressed: () {},
               ),
-              SizedBox(height: sizeHeight * 0.02), CustomTextFormFeild(
+              SizedBox(height: sizeHeight * 0.02),
+              CustomTextFormFeild(
                 // suffixIcon: null,
                 obscureText: false,
                 hintText: "Email",
@@ -72,7 +72,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 validator: (value) => checker.onEmailChecker(value),
                 onPressed: () {},
               ),
-              SizedBox(height: sizeHeight * 0.02), CustomTextFormFeild(
+              SizedBox(height: sizeHeight * 0.02),
+              CustomTextFormFeild(
                 // suffixIcon: null,
                 obscureText: false,
                 hintText: "Number",
@@ -85,7 +86,8 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: sizeHeight * 0.02),
               CustomTextFormFeild(
                 validator: (value) => checker.onPasswordChecker(value),
-                suffixIcon: suffixIcon ? Icons.visibility : Icons.visibility_off,
+                suffixIcon:
+                    suffixIcon ? Icons.visibility : Icons.visibility_off,
 
                 hintText: "Password",
                 controler: password,
@@ -111,10 +113,9 @@ class _SignUpPageState extends State<SignUpPage> {
               // ),
               SizedBox(height: sizeHeight * 0.05),
               CustomSigninButton(
-                signIn: ()
-                {
+                signIn: () {
                   if (isFormKey.currentState!.validate()) {
-                    users.signinAuth(email.text,password.text, context);
+                    users.signinAuth(email.text, password.text, context);
                     // if(users == true){
                     //   print("ok");
                     //   Navigator.pushNamed(context, "/users_home_page");
