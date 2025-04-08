@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:selon/pages/home_page/users_home_page.dart';
+import 'package:selon/pages/sign_related_page/signin_page.dart';
+import 'package:selon/pages/sign_related_page/signup_page.dart';
+import 'package:selon/pages/sign_related_page/state_management/bloc/signin_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -21,8 +25,8 @@ class MyApp extends StatelessWidget {
         initialRoute: "/",
         routes: {
           "/": (context) => SignInPage(),
-          // "/sign_up_page": (context) => SignUpPage(),
-          // "/users_home_page": (context) => UsersHomePage(), // users_home_page
+          "/sign_up_page": (context) => SignUpPage(),
+          "/users_home_page": (context) => UsersHomePage(), // users_home_page
         },
       ),
     );

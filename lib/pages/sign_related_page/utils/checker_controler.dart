@@ -1,15 +1,20 @@
-class Checker{
-
-  String? onEmailChecker(String? value) {
-    if (value == null || value.isEmpty) {
+class Checker {
+  String? onEmailChecker(String? value, bool? signcheck) {
+    if (signcheck == true) {
+      if (value == null || value.isEmpty) {
+        return "Email can't be empty";
+      } else if (!value.endsWith("@gmail.com")) {
+        value = value + "@gmail.com";
+        return value;
+      }
+    } else if (value == null || value.isEmpty) {
       return "Email can't be empty";
     }
-
     String emailPattern =
         r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'; // Email Checker
     RegExp regex = RegExp(emailPattern);
 
-    if (!value.endsWith(".com")) {
+    if (!value!.endsWith(".com")) {
       return "Use .com";
     }
     if (!value.contains("@")) {
@@ -22,7 +27,6 @@ class Checker{
 
     return null; // jodi knojhamela na thake
   }
-
 
   String? onPasswordChecker(String? value) {
     if (value == null || value.isEmpty) {
@@ -51,6 +55,4 @@ class Checker{
 
     return null; // all ok
   }
-
-
 }
