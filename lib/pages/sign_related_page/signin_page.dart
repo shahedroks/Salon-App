@@ -1,23 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:selon/pages/signIn_page/custom_widget/custom_text_form_feild.dart';
-import 'package:selon/pages/signin_page/custom_function/checker_controler.dart';
-import 'package:selon/pages/signin_page/custom_function/users_controler.dart';
+import 'package:selon/pages/sign_related_page/custom_widget/custom_text_form_feild.dart';
+import 'package:selon/pages/sign_related_page/custom_widget/password_visibility.dart';
+import 'package:selon/pages/sign_related_page/utils/checker_controler.dart';
+import 'package:selon/pages/sign_related_page/utils/users_controler.dart';
+
 import 'custom_widget/custom_divider.dart';
 import 'custom_widget/custom_signIn_button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
-
   @override
   State<SignInPage> createState() => _SignInPageState();
 }
+
 bool obscureText = true;
-bool suffixIcon = false;
-
-Checker checker =Checker();
+Checker checker = Checker();
 Users users = Users();
-
 TextEditingController email = TextEditingController();
 TextEditingController password = TextEditingController();
 final GlobalKey<FormState> isFormKey = GlobalKey<FormState>();
@@ -49,34 +47,26 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
               SizedBox(height: sizeHeight * 0.2),
-              CustomTextFormFeild(
-                // suffixIcon: null,
-                obscureText: false,
-                hintText: "Email",
-                controler: email,
-                // labelText: "Emial",
-                prefixIcon: Icons.email,
-                validator: (value) => checker.onEmailChecker(value),
-                onPressed: () {},
+              CustomContainerTextFormFeild(
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.email),
+                    hintText: "Email",
+                  ),
+                  validator: (value) => checker.onEmailChecker(value),
+                ),
               ),
               SizedBox(height: sizeHeight * 0.02),
-              CustomTextFormFeild(
-                validator: (value) => checker.onPasswordChecker(value),
-                suffixIcon: suffixIcon ? Icons.visibility : Icons.visibility_off,
-          
-                hintText: "Password",
-                controler: password,
-                // labelText: "Password",
-                prefixIcon: Icons.lock,
-                obscureText: obscureText,
-                onPressed: () {
-                  setState(() {
-                    suffixIcon = !suffixIcon;
-                    obscureText = !obscureText;
-                  });
-                },
+              CustomContainerTextFormFeild(
+                child: TextFormField(
+                  obscureText: obscureText,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    hintText: "Password",
+                    suffixIcon: PasswordVisibility(),
+                  ),
+                ),
               ),
-          
               Container(
                 padding: EdgeInsets.symmetric(vertical: sizeHeight * 0.01),
                 margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.05),
@@ -90,13 +80,7 @@ class _SignInPageState extends State<SignInPage> {
               CustomSigninButton(
                 signIn: () {
                   if (isFormKey.currentState!.validate()) {
-                    users.signinAuth(email.text,password.text, context);
-                    // if(users == true){
-                    //   print("ok");
-                    //   Navigator.pushNamed(context, "/users_home_page");
-                    // }else {
-                    //   print("error loging");
-                    // }
+                    users.signinAuth(email.text, password.text, context);
                   }
                 },
                 text: "Sign In",
@@ -131,4 +115,10 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
+}
+
+@override
+void Dispose() {
+  email.dispose();
+  password.dispose();
 }

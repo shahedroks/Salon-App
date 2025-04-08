@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:selon/pages/signin_page/signin_page.dart';
-import 'package:selon/pages/signin_page/state_management/bloc/signin_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
