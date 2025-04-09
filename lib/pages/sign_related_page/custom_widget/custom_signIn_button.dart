@@ -6,7 +6,7 @@ class CustomSigninButton extends StatelessWidget {
   Color? textColor;
   String? image;
   bool showAvater;
-  final VoidCallback? signIn;
+  final VoidCallback? signControler;
   CustomSigninButton({
     super.key,
     this.text,
@@ -14,7 +14,7 @@ class CustomSigninButton extends StatelessWidget {
     this.textColor,
     this.image,
     this.showAvater = true,
-    this.signIn,
+    this.signControler,
   });
 
   @override
@@ -22,7 +22,7 @@ class CustomSigninButton extends StatelessWidget {
     final sizeWidth = MediaQuery.of(context).size.width;
     final sizeHeight = MediaQuery.of(context).size.height;
     return InkWell(
-      onTap: signIn,
+      onTap: signControler,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.03),
         height: sizeHeight * 0.06,

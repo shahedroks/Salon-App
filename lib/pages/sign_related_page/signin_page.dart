@@ -84,9 +84,9 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.05),
                 CustomSigninButton(
-                  signIn: () {
+                  signControler: () {
                     if (isFormKey.currentState!.validate()) {
-                      // users.signinAuth(email.text, password.text, context);
+                      users.signInAuth(email.text, password.text, context);
                     }
                   },
                   text: "Sign In",

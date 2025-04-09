@@ -39,6 +39,7 @@ dependencies:
   cloud_firestore:
   firebase_auth:
   fluttertoast: ^8.2.12
+  logger: ^2.5.0
 
 dev_dependencies:
   flutter_test:

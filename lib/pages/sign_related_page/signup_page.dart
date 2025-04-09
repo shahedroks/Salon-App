@@ -75,7 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 TextFormField(
                   textInputAction: TextInputAction.done,
                   obscureText: obscureText,
-                  validator: (value) => checker.onNumberChecker(value),
+                  validator: (value) => checker.onPasswordChecker(value),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
                     hintText: "Password",
@@ -106,9 +106,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.05),
                 CustomSigninButton(
-                  signIn: () {
+                  signControler: () {
                     if (isFormKey.currentState!.validate()) {
-                      users.signinAuth(email.text, password.text, context);
+                      users.signUpAuth(email.text, password.text, context);
                     }
                   },
                   text: "Sign In",
