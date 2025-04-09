@@ -29,6 +29,7 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       body: Form(
         key: isFormKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -47,11 +48,21 @@ class _SignInPageState extends State<SignInPage> {
                     prefixIcon: Icon(Icons.email),
                     hintText: "Email",
                   ),
-                  validator: (value) => checker.onEmailChecker(value, true),
+                  validator: (value) {
+                    final result = checker.onEmailChecker(value);
+                    checker.signChecker = true;
+                    print(checker.signChecker);
+                    return result;
+                  },
                 ),
                 SizedBox(height: sizeHeight * 0.02),
                 TextFormField(
                   obscureText: obscureText,
+                  validator: (value) {
+                    final result = checker.onPasswordChecker(value);
+                    checker.signChecker = true;
+                    return result;
+                  },
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
                     hintText: "Password",

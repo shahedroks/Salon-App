@@ -31,6 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       body: Form(
         key: isFormKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -58,12 +59,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     prefixIcon: Icon(Icons.email),
                     hintText: "Email",
                   ),
-                  validator: (value) => checker.onEmailChecker(value, false),
+                  validator: (value) => checker.onEmailChecker(value),
                 ),
                 SizedBox(height: sizeHeight * 0.02),
                 TextFormField(
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
+                  validator: (value) {
+                    return checker.onNumberChecker(value);
+                  },
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.call),
                     hintText: "Number",
@@ -73,6 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 TextFormField(
                   textInputAction: TextInputAction.done,
                   obscureText: obscureText,
+                  validator: (value) => checker.onNumberChecker(value),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
                     hintText: "Password",
