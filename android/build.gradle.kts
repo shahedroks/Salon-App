@@ -21,6 +21,6 @@ tasks.register<Delete>("clean") {
 }
 plugins {
     id("com.android.application") version "8.7.0" apply false
-    id("com.google.gms.google-services") version "4.3.13" apply false
+    id("com.google.gms.google-services") version "4.3.15" apply false
     // অন্যান্য প্লাগিনগুলি এখানে
 }
