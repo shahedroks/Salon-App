@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:selon/pages/sign_related_page/custom_widget/custom_text_form_feild.dart';
+import 'package:selon/pages/sign_related_page/custom_widget/custom_lower_text_controler_sign.dart';
+import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/password_visibility.dart';
 import 'package:selon/pages/sign_related_page/utils/checker_controler.dart';
 import 'package:selon/pages/sign_related_page/utils/users_controler.dart';
@@ -28,88 +29,86 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       body: Form(
         key: isFormKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: sizeHeight * 0.1),
-              Container(
-                margin: EdgeInsets.only(left: sizeWidth * 0.03),
-                child: Text(
-                  "Welcome Back",
-                  style: TextStyle(fontSize: sizeWidth * 0.06),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: sizeHeight * 0.1),
+                CustomUpperTextControlerSign(
+                  firstText: "Welcome Back",
+                  secondText:
+                      "Glad to meet you again!, please login to use the app..",
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: sizeWidth * 0.03),
-                child: Text(
-                  "Glad to meet you again!, please login to use the app..",
-                ),
-              ),
-              SizedBox(height: sizeHeight * 0.2),
-              CustomContainerTextFormFeild(
-                child: TextFormField(
+                SizedBox(height: sizeHeight * 0.25),
+                TextFormField(
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email),
                     hintText: "Email",
                   ),
-                  validator: (value) => checker.onEmailChecker(value),
+                  validator: (value) {
+                    final result = checker.onEmailChecker(value);
+                    checker.signChecker = true;
+                    print(checker.signChecker);
+                    return result;
+                  },
                 ),
-              ),
-              SizedBox(height: sizeHeight * 0.02),
-              CustomContainerTextFormFeild(
-                child: TextFormField(
+                SizedBox(height: sizeHeight * 0.02),
+                TextFormField(
                   obscureText: obscureText,
+                  validator: (value) {
+                    final result = checker.onPasswordChecker(value);
+                    checker.signChecker = true;
+                    return result;
+                  },
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
                     hintText: "Password",
                     suffixIcon: PasswordVisibility(),
                   ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: sizeHeight * 0.01),
-                margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.05),
-                alignment: Alignment.topRight,
-                child: Text(
-                  "Forgot Password",
-                  style: TextStyle(color: Color(0xff156778)),
-                ),
-              ),
-              SizedBox(height: sizeHeight * 0.05),
-              CustomSigninButton(
-                signIn: () {
-                  if (isFormKey.currentState!.validate()) {
-                    users.signinAuth(email.text, password.text, context);
-                  }
-                },
-                text: "Sign In",
-                contenerColor: Color(0xff156778),
-                textColor: Colors.white,
-                showAvater: false,
-              ),
-              SizedBox(height: sizeHeight * 0.03),
-              CustomDivider(),
-              SizedBox(height: sizeHeight * 0.03),
-              CustomSigninButton(
-                textColor: Color(0xff156778),
-                text: "Sign In With Google",
-                contenerColor: Colors.white,
-                image: "assets/Google.png",
-              ),
-              SizedBox(height: sizeHeight * 0.03),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Don’t have an account?"),
-                  SizedBox(width: sizeWidth * 0.02),
-                  Text(
-                    "Join Now",
-                    style: TextStyle(color: Color(0xff156778), fontSize: 15),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: sizeHeight * 0.01),
+                  margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.05),
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    "Forgot Password",
+                    style: TextStyle(color: Color(0xff156778)),
                   ),
-                ],
-              ),
-            ],
+                ),
+                SizedBox(height: sizeHeight * 0.05),
+                CustomSigninButton(
+                  signIn: () {
+                    if (isFormKey.currentState!.validate()) {
+                      // users.signinAuth(email.text, password.text, context);
+                    }
+                  },
+                  text: "Sign In",
+                  contenerColor: Color(0xff156778),
+                  textColor: Colors.white,
+                  showAvater: false,
+                ),
+                SizedBox(height: sizeHeight * 0.03),
+                CustomDivider(),
+                SizedBox(height: sizeHeight * 0.03),
+                CustomSigninButton(
+                  textColor: Color(0xff156778),
+                  text: "Sign In With Google",
+                  contenerColor: Colors.white,
+                  image: "assets/image/Google.png",
+                ),
+                SizedBox(height: sizeHeight * 0.03),
+                CustomLowerTextControlerSign(
+                  firstText: "Don’t have an account?Don’t have an account?",
+                  secondText: "Join Now",
+                  onTap: () {
+                    Navigator.pushNamed(context, "/sign_up_page");
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
