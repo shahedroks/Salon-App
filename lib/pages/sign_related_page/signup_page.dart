@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_lower_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
-import 'package:selon/pages/sign_related_page/custom_widget/password_visibility.dart';
 import 'package:selon/pages/sign_related_page/utils/checker_controler.dart';
 import 'package:selon/pages/sign_related_page/utils/users_controler.dart';
 
@@ -14,7 +13,6 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-bool obscureText = true;
 Checker checker = Checker();
 Users users = Users();
 TextEditingController name = TextEditingController();
@@ -81,7 +79,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
                     hintText: "Password",
-                    suffixIcon: PasswordVisibility(),
+                    suffixIcon: IconButton(
+                      onPressed: () => visibilityButton(),
+                      icon:
+                          !obscureText
+                              ? Icon(Icons.visibility)
+                              : Icon(Icons.visibility_off),
+                    ),
                   ),
                 ),
                 Text.rich(
@@ -135,6 +139,12 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  bool obscureText = true;
+  void visibilityButton() {
+    obscureText = !obscureText;
+    setState(() {});
   }
 }
 

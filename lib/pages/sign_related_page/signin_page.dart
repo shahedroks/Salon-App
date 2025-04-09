@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_lower_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
-import 'package:selon/pages/sign_related_page/custom_widget/password_visibility.dart';
 import 'package:selon/pages/sign_related_page/utils/checker_controler.dart';
 import 'package:selon/pages/sign_related_page/utils/users_controler.dart';
 
@@ -14,7 +13,6 @@ class SignInPage extends StatefulWidget {
   State<SignInPage> createState() => _SignInPageState();
 }
 
-bool obscureText = true;
 Checker checker = Checker();
 Users users = Users();
 TextEditingController email = TextEditingController();
@@ -66,7 +64,13 @@ class _SignInPageState extends State<SignInPage> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
                     hintText: "Password",
-                    suffixIcon: PasswordVisibility(),
+                    suffixIcon: IconButton(
+                      onPressed: () => visibilityButton(),
+                      icon:
+                          !obscureText
+                              ? Icon(Icons.visibility)
+                              : Icon(Icons.visibility_off),
+                    ),
                   ),
                 ),
                 Container(
@@ -113,6 +117,14 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
+  }
+
+  bool obscureText = true;
+  void visibilityButton() {
+    setState(() {
+      obscureText = !obscureText;
+      print(obscureText);
+    });
   }
 }
 
