@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_lower_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
-import 'package:selon/pages/sign_related_page/utils/checker_controler.dart';
-import 'package:selon/pages/sign_related_page/utils/users_controler.dart';
+import 'package:selon/utils/assets_path.dart';
 
+import '../../utils/users_controler.dart';
+import '../../utils/valited_checker_controler.dart';
 import 'custom_widget/custom_divider.dart';
-import 'custom_widget/custom_signIn_button.dart';
+import 'custom_widget/custom_sign_controler_button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -13,11 +14,11 @@ class SignInPage extends StatefulWidget {
   State<SignInPage> createState() => _SignInPageState();
 }
 
-Checker checker = Checker();
+ValitedChecker checker = ValitedChecker();
 Users users = Users();
 TextEditingController email = TextEditingController();
 TextEditingController password = TextEditingController();
-final GlobalKey<FormState> isFormKey = GlobalKey<FormState>();
+final GlobalKey<FormState> isFormKey1 = GlobalKey<FormState>();
 
 class _SignInPageState extends State<SignInPage> {
   @override
@@ -26,7 +27,7 @@ class _SignInPageState extends State<SignInPage> {
     final sizeHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Form(
-        key: isFormKey,
+        key: isFormKey1,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: SingleChildScrollView(
           child: Padding(
@@ -83,9 +84,9 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                 ),
                 SizedBox(height: sizeHeight * 0.05),
-                CustomSigninButton(
-                  signControler: () {
-                    if (isFormKey.currentState!.validate()) {
+                CustomSignControlerButton(
+                  onTap: () {
+                    if (isFormKey1.currentState!.validate()) {
                       users.signInAuth(email.text, password.text, context);
                     }
                   },
@@ -97,11 +98,12 @@ class _SignInPageState extends State<SignInPage> {
                 SizedBox(height: sizeHeight * 0.03),
                 CustomDivider(),
                 SizedBox(height: sizeHeight * 0.03),
-                CustomSigninButton(
+                CustomSignControlerButton(
                   textColor: Color(0xff156778),
                   text: "Sign In With Google",
                   contenerColor: Colors.white,
-                  image: "assets/Google.png",
+                  image: "${AssetsPath.googleImage}",
+                  onTap: googleSignIn,
                 ),
                 SizedBox(height: sizeHeight * 0.03),
                 CustomLowerTextControlerSign(
@@ -119,6 +121,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  void googleSignIn() {}
   bool obscureText = true;
   void visibilityButton() {
     setState(() {

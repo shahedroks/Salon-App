@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_lower_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
-import 'package:selon/pages/sign_related_page/utils/checker_controler.dart';
-import 'package:selon/pages/sign_related_page/utils/users_controler.dart';
+import 'package:selon/pages/sign_related_page/signin_page.dart';
+import 'package:selon/utils/valited_checker_controler.dart';
 
+import '../../utils/users_controler.dart';
 import 'custom_widget/custom_divider.dart';
-import 'custom_widget/custom_signIn_button.dart';
+import 'custom_widget/custom_sign_controler_button.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -13,13 +14,13 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-Checker checker = Checker();
+ValitedChecker valitedChecker = ValitedChecker();
 Users users = Users();
 TextEditingController name = TextEditingController();
 TextEditingController email = TextEditingController();
 TextEditingController number = TextEditingController();
 TextEditingController password = TextEditingController();
-final GlobalKey<FormState> isFormKey = GlobalKey<FormState>();
+final GlobalKey<FormState> isFormKey2 = GlobalKey<FormState>();
 
 class _SignUpPageState extends State<SignUpPage> {
   @override
@@ -28,7 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final sizeHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Form(
-        key: isFormKey,
+        key: isFormKey2,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: SingleChildScrollView(
           child: Padding(
@@ -105,9 +106,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 SizedBox(height: sizeHeight * 0.05),
-                CustomSigninButton(
-                  signControler: () {
-                    if (isFormKey.currentState!.validate()) {
+                CustomSignControlerButton(
+                  onTap: () {
+                    if (isFormKey2.currentState!.validate()) {
                       users.signUpAuth(email.text, password.text, context);
                     }
                   },
@@ -119,18 +120,19 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(height: sizeHeight * 0.03),
                 CustomDivider(),
                 SizedBox(height: sizeHeight * 0.03),
-                CustomSigninButton(
+                CustomSignControlerButton(
                   textColor: Color(0xff156778),
                   text: "Sign In With Google",
                   contenerColor: Colors.white,
-                  image: "assets/Google.png",
+                  image: "assets/image/Google.png",
+                  onTap: googleSignIn,
                 ),
                 SizedBox(height: sizeHeight * 0.03),
                 CustomLowerTextControlerSign(
                   firstText: "Already have an account?",
                   secondText: "Sign Now",
                   onTap: () {
-                    Navigator.pushNamed(context, "/");
+                    Navigator.pushNamed(context, "/sign_in_page");
                   },
                 ),
               ],
@@ -141,6 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  void googleSignIn() {}
   bool obscureText = true;
   void visibilityButton() {
     obscureText = !obscureText;

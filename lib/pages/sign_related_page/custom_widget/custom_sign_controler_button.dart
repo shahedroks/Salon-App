@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class CustomSigninButton extends StatelessWidget {
+class CustomSignControlerButton extends StatelessWidget {
   String? text;
   Color? contenerColor;
   Color? textColor;
   String? image;
   bool showAvater;
-  final VoidCallback? signIn;
-  CustomSigninButton({
+  final VoidCallback onTap;
+  CustomSignControlerButton({
     super.key,
     this.text,
     this.contenerColor,
     this.textColor,
     this.image,
     this.showAvater = true,
-    this.signIn,
+    required this.onTap,
   });
 
   @override
@@ -22,7 +22,7 @@ class CustomSigninButton extends StatelessWidget {
     final sizeWidth = MediaQuery.of(context).size.width;
     final sizeHeight = MediaQuery.of(context).size.height;
     return InkWell(
-      onTap: signIn,
+      onTap: onTap,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.03),
         height: sizeHeight * 0.06,
