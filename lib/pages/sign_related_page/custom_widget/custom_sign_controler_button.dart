@@ -5,6 +5,7 @@ class CustomSignControlerButton extends StatelessWidget {
   Color? contenerColor;
   Color? textColor;
   String? image;
+  IconData? icon;
   bool showAvater;
   final VoidCallback onTap;
   CustomSignControlerButton({
@@ -13,6 +14,7 @@ class CustomSignControlerButton extends StatelessWidget {
     this.contenerColor,
     this.textColor,
     this.image,
+    this.icon,
     this.showAvater = true,
     required this.onTap,
   });
@@ -36,7 +38,9 @@ class CustomSignControlerButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (showAvater)
-              CircleAvatar(child: Image.asset("$image"), radius: 10),
+              image != null
+                  ? CircleAvatar(child: Image.asset("$image"), radius: 10)
+                  : Icon(icon),
             SizedBox(width: showAvater ? sizeWidth * 0.03 : 0),
             Text(text!, style: TextStyle(fontSize: 18, color: textColor)),
           ],

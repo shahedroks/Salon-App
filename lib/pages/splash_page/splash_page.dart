@@ -27,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
         child: Container(
           width: sizeWidth * 0.5,
           height: sizeHeight * 0.1,
-          child: Image.asset(AssetsPath.logoImage, fit: BoxFit.cover),
+          child: Image.asset(ImagesPath.logoImage, fit: BoxFit.cover),
         ),
       ),
     );

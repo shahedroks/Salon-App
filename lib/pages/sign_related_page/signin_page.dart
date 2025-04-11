@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_lower_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
+import 'package:selon/pages/sign_related_page/forget_password_page.dart';
 import 'package:selon/utils/assets_path.dart';
 
 import '../../utils/users_controler.dart';
 import '../../utils/valited_checker_controler.dart';
 import 'custom_widget/custom_divider.dart';
 import 'custom_widget/custom_sign_controler_button.dart';
+import 'custom_widget/forget_text.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -74,22 +76,15 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: sizeHeight * 0.01),
-                  margin: EdgeInsets.symmetric(horizontal: sizeWidth * 0.05),
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "Forgot Password",
-                    style: TextStyle(color: Color(0xff156778)),
-                  ),
+                ForgetText(
+                  text: "Forget Password",
+                  onTap: () {
+                    gotoForgetPage(context);
+                  },
                 ),
                 SizedBox(height: sizeHeight * 0.05),
                 CustomSignControlerButton(
-                  onTap: () {
-                    if (isFormKey1.currentState!.validate()) {
-                      users.signInAuth(email.text, password.text, context);
-                    }
-                  },
+                  onTap: signIn,
                   text: "Sign In",
                   contenerColor: Color(0xff156778),
                   textColor: Colors.white,
@@ -102,7 +97,7 @@ class _SignInPageState extends State<SignInPage> {
                   textColor: Color(0xff156778),
                   text: "Sign In With Google",
                   contenerColor: Colors.white,
-                  image: "${AssetsPath.googleImage}",
+                  image: "${ImagesPath.googleImage}",
                   onTap: googleSignIn,
                 ),
                 SizedBox(height: sizeHeight * 0.03),
@@ -121,18 +116,40 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  void signIn() {
+    if (isFormKey1.currentState!.validate()) {
+      users.signInAuth(email.text, password.text, context);
+      clearText();
+    }
+  }
+
   void googleSignIn() {}
   bool obscureText = true;
+
   void visibilityButton() {
     setState(() {
       obscureText = !obscureText;
       print(obscureText);
     });
   }
-}
 
-@override
-void Dispose() {
-  email.dispose();
-  password.dispose();
+  void clearText() {
+    email.clear();
+    password.clear();
+  }
+
+  void gotoForgetPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ForgetPasswordPage()),
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    email.dispose();
+    password.dispose();
+  }
 }

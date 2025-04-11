@@ -15,8 +15,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
+          prefixIconColor: Colors.grey,
+          hintStyle: TextStyle(color: Colors.grey),
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(25),

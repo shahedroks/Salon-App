@@ -4,6 +4,7 @@ import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_co
 import 'package:selon/pages/sign_related_page/signin_page.dart';
 import 'package:selon/utils/valited_checker_controler.dart';
 
+import '../../utils/assets_path.dart';
 import '../../utils/users_controler.dart';
 import 'custom_widget/custom_divider.dart';
 import 'custom_widget/custom_sign_controler_button.dart';
@@ -107,11 +108,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.05),
                 CustomSignControlerButton(
-                  onTap: () {
-                    if (isFormKey2.currentState!.validate()) {
-                      users.signUpAuth(email.text, password.text, context);
-                    }
-                  },
+                  onTap: signinUsers,
                   text: "Sign In",
                   contenerColor: Color(0xff156778),
                   textColor: Colors.white,
@@ -124,7 +121,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   textColor: Color(0xff156778),
                   text: "Sign In With Google",
                   contenerColor: Colors.white,
-                  image: "assets/image/Google.png",
+                  image: "${ImagesPath.googleImage}",
                   onTap: googleSignIn,
                 ),
                 SizedBox(height: sizeHeight * 0.03),
@@ -149,12 +146,28 @@ class _SignUpPageState extends State<SignUpPage> {
     obscureText = !obscureText;
     setState(() {});
   }
-}
 
-@override
-void Dispose() {
-  name.dispose();
-  email.dispose();
-  number.dispose();
-  password.dispose();
+  void signinUsers() {
+    if (isFormKey2.currentState!.validate()) {
+      users.signUpAuth(email.text, password.text, context);
+      clearText();
+    }
+  }
+
+  void clearText() {
+    name.clear();
+    email.clear();
+    number.clear();
+    password.clear();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    name.dispose();
+    email.dispose();
+    number.dispose();
+    password.dispose();
+  }
 }

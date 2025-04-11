@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class OnBoardingImage extends StatelessWidget {
-   Widget child;
-  OnBoardingImage({super.key, required this.child});
+  Widget child;
+  String image;
+  OnBoardingImage({super.key, required this.child, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -11,11 +12,8 @@ class OnBoardingImage extends StatelessWidget {
     return Container(
       width: sizeHeight,
       height: sizeHeight,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/image/OnBoarding1.png"),
-          fit: BoxFit.cover,
-        ),
+      decoration: BoxDecoration(
+        image: DecorationImage(image: AssetImage("$image"), fit: BoxFit.cover),
       ),
       child: child,
     );
