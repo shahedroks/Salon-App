@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:selon/pages/onboarding_related_page/Custom_widget/boarding_iamge.dart';
 import 'package:selon/pages/onboarding_related_page/Custom_widget/dot_indicator.dart';
 import 'package:selon/pages/onboarding_related_page/onbroarding2_page.dart';
+import 'package:selon/pages/sign_related_page/signup_page.dart';
 import 'package:selon/utils/assets_path.dart';
 import 'package:selon/utils/color_path.dart';
 
@@ -46,14 +47,19 @@ class OnbroardingPage1 extends StatelessWidget {
               CustomLowerTextControlerSign(
                 firstText: "Already have an account?",
                 secondText: "Sign Now",
-                onTap: () {
-                  Navigator.pushNamed(context, "/sign_in_page");
-                },
+                onTap: () => singUpPage(context),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void singUpPage(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignUpPage()),
     );
   }
 

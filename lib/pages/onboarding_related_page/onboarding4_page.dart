@@ -3,7 +3,7 @@ import 'package:selon/pages/onboarding_related_page/Custom_widget/boarding_iamge
 import 'package:selon/pages/onboarding_related_page/Custom_widget/boarding_upper_text.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_lower_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_sign_controler_button.dart';
-import 'package:selon/pages/sign_related_page/signin_page.dart';
+import 'package:selon/pages/sign_related_page/signup_page.dart';
 import 'package:selon/utils/assets_path.dart';
 import 'package:selon/utils/color_path.dart';
 
@@ -50,9 +50,7 @@ class OnbroardingPage4 extends StatelessWidget {
               CustomLowerTextControlerSign(
                 firstText: "Already have an account?",
                 secondText: "Sign Now",
-                onTap: () {
-                  Navigator.pushNamed(context, "/sign_in_page");
-                },
+                onTap: () => singUpPage(context),
               ),
             ],
           ),
@@ -61,10 +59,17 @@ class OnbroardingPage4 extends StatelessWidget {
     );
   }
 
+  void singUpPage(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignUpPage()),
+    );
+  }
+
   nextPage(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => SignInPage()),
+      MaterialPageRoute(builder: (context) => SignUpPage()),
       (predicate) => false,
     );
   }

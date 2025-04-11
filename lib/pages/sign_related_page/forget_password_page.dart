@@ -35,9 +35,9 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
               children: [
                 SizedBox(height: sizeHeight * 0.1),
                 CustomUpperTextControlerSign(
-                  firstText: "Welcome Back",
+                  firstText: "Forgot password,",
                   secondText:
-                      "Glad to meet you again!, please login to use the app..",
+                      "Please type your email below and we will give you a OTP code",
                 ),
                 SizedBox(height: sizeHeight * 0.25),
                 TextFormField(

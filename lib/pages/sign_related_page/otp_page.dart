@@ -51,9 +51,12 @@ class _OTPPageState extends State<OTPPage> {
                     borderRadius: BorderRadius.circular(5),
                     fieldHeight: sizeHeight * 0.06,
                     fieldWidth: sizeWidth * 0.12,
-                    activeFillColor: Colors.grey.shade200,
+                    activeFillColor: Colors.grey.shade300,
+                    inactiveFillColor: Colors.white,
+                    selectedFillColor: Colors.white,
                   ),
-                  animationDuration: Duration(milliseconds: 500),
+                  animationDuration: Duration(milliseconds: 300),
+
                   backgroundColor: Colors.white,
                   enableActiveFill: true,
                   controller: _otpControler,
@@ -88,21 +91,15 @@ class _OTPPageState extends State<OTPPage> {
 
   void googleSignIn() {}
   bool obscureText = true;
-  void visibilityButton() {
-    setState(() {
-      obscureText = !obscureText;
-      print(obscureText);
-    });
-  }
 
   void clearText() {
-    email.clear();
+    _otpControler.clear();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    email.dispose();
+    _otpControler.dispose();
   }
 }

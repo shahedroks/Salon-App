@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
+import 'package:selon/pages/sign_related_page/signin_page.dart';
 
 import '../../utils/users_controler.dart';
 import '../../utils/valited_checker_controler.dart';
 import 'custom_widget/custom_sign_controler_button.dart';
-import 'custom_widget/forget_text.dart';
 
 class NewPasswordPage extends StatefulWidget {
   const NewPasswordPage({super.key});
@@ -14,7 +14,8 @@ class NewPasswordPage extends StatefulWidget {
 
 ValitedChecker checker = ValitedChecker();
 Users users = Users();
-TextEditingController email = TextEditingController();
+TextEditingController _newPassword = TextEditingController();
+TextEditingController _conformPassword = TextEditingController();
 final GlobalKey<FormState> isFormKey1 = GlobalKey<FormState>();
 
 class _NewPasswordPageState extends State<NewPasswordPage> {
@@ -34,29 +35,48 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
               children: [
                 SizedBox(height: sizeHeight * 0.1),
                 CustomUpperTextControlerSign(
-                  firstText: "Welcome Back",
+                  firstText: "New password",
                   secondText:
-                      "Glad to meet you again!, please login to use the app..",
+                      "Now, you can create new password and confirm it below",
                 ),
                 SizedBox(height: sizeHeight * 0.25),
                 TextFormField(
+                  controller: _newPassword,
+                  obscureText: obscureText,
+                  validator: (value) => checker.onPasswordChecker(value),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    hintText: "Email",
+                    prefixIcon: Icon(Icons.lock),
+                    hintText: "Confirm Password",
+                    suffixIcon: IconButton(
+                      onPressed: () => visibilityButton(),
+                      icon:
+                          !obscureText
+                              ? Icon(Icons.visibility)
+                              : Icon(Icons.visibility_off),
+                    ),
                   ),
-                  validator: (value) {
-                    final result = checker.onEmailChecker(value);
-                    checker.signChecker = true;
-                    print(checker.signChecker);
-                    return result;
-                  },
                 ),
                 SizedBox(height: sizeHeight * 0.02),
-                ForgetText(text: "Use Phone Number"),
+                TextFormField(
+                  controller: _conformPassword,
+                  obscureText: obscureText,
+                  validator: (value) => confirmPassword(value),
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    hintText: "Confirm Password",
+                    suffixIcon: IconButton(
+                      onPressed: () => visibilityButton(),
+                      icon:
+                          !obscureText
+                              ? Icon(Icons.visibility)
+                              : Icon(Icons.visibility_off),
+                    ),
+                  ),
+                ),
                 SizedBox(height: sizeHeight * 0.05),
                 CustomSignControlerButton(
-                  onTap: verifyDone,
-                  text: "Email Verify",
+                  onTap: newPasswordDone,
+                  text: "Sign In",
                   contenerColor: Color(0xff156778),
                   textColor: Colors.white,
                   showAvater: false,
@@ -70,9 +90,25 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
     );
   }
 
-  void verifyDone() {}
+  String? confirmPassword(value) {
+    if (value == null || value.isEmpty) {
+      return "Password can't be empty";
+    }
+    if (value != _newPassword.text) {
+      return "Password does not match";
+    }
+  }
 
-  void googleSignIn() {}
+  void newPasswordDone() {
+    if (isFormKey1.currentState!.validate()) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => SignInPage()),
+        (predicate) => false,
+      );
+    }
+  }
+
   bool obscureText = true;
   void visibilityButton() {
     setState(() {
@@ -82,13 +118,15 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
   }
 
   void clearText() {
-    email.clear();
+    _newPassword.clear();
+    _conformPassword.clear();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    email.dispose();
+    _newPassword.dispose();
+    _conformPassword.dispose();
   }
 }
