@@ -42,6 +42,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                 SizedBox(height: sizeHeight * 0.25),
                 TextFormField(
                   controller: _newPassword,
+                  textInputAction: TextInputAction.next,
                   obscureText: obscureText,
                   validator: (value) => checker.onPasswordChecker(value),
                   decoration: InputDecoration(

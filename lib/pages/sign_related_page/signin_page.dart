@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:selon/pages/home_page/users_home_page.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_lower_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/forget_password_page.dart';
@@ -118,7 +119,12 @@ class _SignInPageState extends State<SignInPage> {
 
   void signIn() {
     if (isFormKey1.currentState!.validate()) {
-      users.signInAuth(email.text, password.text, context);
+      // users.signInAuth(email.text, password.text, context);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => UsersHomePage()),
+        (predicate) => false,
+      );
       clearText();
     }
   }
