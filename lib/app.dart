@@ -25,6 +25,13 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
           ),
         ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+          showUnselectedLabels: true,
+          showSelectedLabels: true,
+        ),
       ),
       initialRoute: "/",
       routes: {

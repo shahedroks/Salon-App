@@ -11,6 +11,7 @@ class UsersHomePage extends StatefulWidget {
 }
 
 class _UsersHomePageState extends State<UsersHomePage> {
+  int _currentIndex = 0;
   List<Map<String, String>> servicesWithLogos = [
     {
       'name': 'Beauty & Spa',
@@ -63,89 +64,184 @@ class _UsersHomePageState extends State<UsersHomePage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: height * 0.05),
-              Row(
-                children: [
-                  CustomUpperTextControlerSign(
-                    firstText: "Hello, Samantha",
-                    secondText: "Find the service you want, and treat yourself",
-                  ),
-                  Spacer(),
-                  IconButton(
-                    onPressed: search,
-                    style: IconButton.styleFrom(
-                      backgroundColor: Color(0xff156778),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: height * 0.05),
+                Row(
+                  children: [
+                    CustomUpperTextControlerSign(
+                      firstText: "Hello, Samantha",
+                      secondText:
+                          "Find the service you want, and treat yourself",
                     ),
-                    icon: Icon(Icons.search, color: Colors.white, size: 35),
-                  ),
-                ],
-              ),
-              SizedBox(height: height * 0.02),
-              SizedBox(
-                height: height * 0.17,
-                width: width,
-                child: CustomUpperPageview(),
-              ),
-              SizedBox(height: height * 0.02),
-              Text("What do you want to do?"),
-              SizedBox(height: height * 0.02),
-              Wrap(
-                spacing: 16.0, // Space between items
-                runSpacing: 20.0, // Space between rows
-                children: [
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics:
-                        NeverScrollableScrollPhysics(), // To prevent scrolling conflict with parent
-                    itemCount: servicesWithLogos.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4, // 4 items per row
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 20,
-                      childAspectRatio: 0.8, // Adjust for icon + text layout
+                    Spacer(),
+                    IconButton(
+                      onPressed: search,
+                      style: IconButton.styleFrom(
+                        backgroundColor: Color(0xff156778),
+                      ),
+                      icon: Icon(Icons.search, color: Colors.white, size: 35),
                     ),
-                    itemBuilder: (context, index) {
-                      final service = servicesWithLogos[index];
-                      return GestureDetector(
-                        onTap: () => goToServiceDetails(service['name']!),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Card(
-                              child: Image.network(
-                                service['logo']!,
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.cover,
+                  ],
+                ),
+                SizedBox(height: height * 0.02),
+                SizedBox(
+                  height: height * 0.17,
+                  width: width,
+                  child: CustomUpperPageview(),
+                ),
+                SizedBox(height: height * 0.02),
+                Text("What do you want to do?"),
+                SizedBox(height: height * 0.02),
+                Wrap(
+                  spacing: 16.0, // Space between items
+                  runSpacing: 20.0, // Space between rows
+                  children: [
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics:
+                          NeverScrollableScrollPhysics(), // To prevent scrolling conflict with parent
+                      itemCount: servicesWithLogos.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4, // 4 items per row
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 20,
+                        childAspectRatio: 0.8, // Adjust for icon + text layout
+                      ),
+                      itemBuilder: (context, index) {
+                        final service = servicesWithLogos[index];
+                        return GestureDetector(
+                          onTap: () => goToServiceDetails(service['name']!),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Card(
+                                child: Image.network(
+                                  service['logo']!,
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              SizedBox(height: 8.0),
+                              Text(
+                                service['name']!.split(
+                                  ' ',
+                                )[0], // only first word
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: height * 0.02),
+                Text("Salon And Flower Shop"),
+                SizedBox(height: height * 0.02),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children:
+                        servicesWithLogos.map((service) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                            ),
+                            child: GestureDetector(
+                              onTap: () => goToSalonDetails(service['name']!),
+                              child: CircleAvatar(
+                                radius: 30,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.green,
+                                      width: 2,
+                                    ),
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: NetworkImage(service['logo']!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                            SizedBox(height: 8.0),
-                            Text(
-                              service['name']!.split(' ')[0], // only first word
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                          );
+                        }).toList(),
+                  ),
+                ),
+                SizedBox(height: height * 0.02),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children:
+                        servicesWithLogos.map((service) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 3),
+                            child: GestureDetector(
+                              onTap: () => goToSalonDetails(service['name']!),
+                              child: Card(
+                                child: Container(
+                                  width: width * 0.33,
+                                  height: height * 0.2,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: NetworkImage(service['logo']!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ],
-                        ),
-                      );
-                    },
+                          );
+                        }).toList(),
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
       ),
     );
   }
 
   void search() {}
   void goToServiceDetails(String serviceName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ServiceDetailsPage(serviceName: serviceName),
+      ),
+    );
+  }
+
+  void goToSalonDetails(String serviceName) {
     Navigator.push(
       context,
       MaterialPageRoute(
