@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating/flutter_rating.dart';
 import 'package:selon/pages/home_page/custom_wedget/custom_upper_pageview.dart';
 import 'package:selon/pages/home_page/service_details_page.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
+
+import 'massage_page.dart';
+import 'notification_page.dart';
 
 class UsersHomePage extends StatefulWidget {
   const UsersHomePage({super.key});
@@ -183,22 +187,90 @@ class _UsersHomePageState extends State<UsersHomePage> {
                   child: Row(
                     children:
                         servicesWithLogos.map((service) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 3),
+                          return Container(
+                            width: width * 0.42,
                             child: GestureDetector(
-                              onTap: () => goToSalonDetails(service['name']!),
-                              child: Card(
-                                child: Container(
-                                  width: width * 0.33,
-                                  height: height * 0.2,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: NetworkImage(service['logo']!),
-                                      fit: BoxFit.cover,
+                              onTap:
+                                  () => gotoToFlowerDetails(service['name']!),
+                              child: Stack(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Card(
+                                        child: Container(
+                                          width: width * 0.4,
+                                          height: height * 0.2,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                service['logo']!,
+                                              ),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+
+                                        children: [
+                                          Text(
+                                            "Hair . Nails . Facial",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                          Text(
+                                            service['name']!,
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            "360 Stillwater Rd. Palm City.",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              overflow: TextOverflow.ellipsis,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              StarRating(
+                                                rating: 3.5,
+                                                color:
+                                                    Colors
+                                                        .orange, // Color for filled and half-filled icons
+                                                borderColor:
+                                                    Colors
+                                                        .grey, // Color for empty icons
+                                              ),
+                                              Text("(4.5)"),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Positioned(
+                                    right: 10,
+                                    top: 10,
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.red.withOpacity(
+                                        0.2,
+                                      ),
+                                      child: Icon(
+                                        Icons.favorite_border,
+                                        color: Colors.red,
+                                        size: 30,
+                                      ),
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
                             ),
                           );
@@ -216,11 +288,22 @@ class _UsersHomePageState extends State<UsersHomePage> {
           setState(() {
             _currentIndex = index;
           });
+          if (index == 2) {
+            goToNotificationPage();
+          } else if (index == 1) {
+            goToMassagePage();
+          }
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.markunread_outlined),
+            label: 'Massage',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notification',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favorites',
@@ -247,6 +330,29 @@ class _UsersHomePageState extends State<UsersHomePage> {
       MaterialPageRoute(
         builder: (context) => ServiceDetailsPage(serviceName: serviceName),
       ),
+    );
+  }
+
+  void gotoToFlowerDetails(String serviceName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ServiceDetailsPage(serviceName: serviceName),
+      ),
+    );
+  }
+
+  void goToNotificationPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => NotificationPage()),
+    );
+  }
+
+  void goToMassagePage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MassagePage()),
     );
   }
 
