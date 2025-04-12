@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:selon/pages/home_page/custom_wedget/custom_upper_pageview.dart';
+import 'package:selon/pages/home_page/profile_page.dart';
 import 'package:selon/pages/home_page/service_details_page.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
 
@@ -117,7 +118,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                       itemBuilder: (context, index) {
                         final service = servicesWithLogos[index];
                         return GestureDetector(
-                          onTap: () => goToServiceDetails(service['name']!),
+                          onTap: () => goToServiceDetails(),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -159,7 +160,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                               horizontal: 8.0,
                             ),
                             child: GestureDetector(
-                              onTap: () => goToSalonDetails(service['name']!),
+                              onTap: () => goToSalonDetails(),
                               child: CircleAvatar(
                                 radius: 30,
                                 child: Container(
@@ -190,8 +191,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                           return Container(
                             width: width * 0.42,
                             child: GestureDetector(
-                              onTap:
-                                  () => gotoToFlowerDetails(service['name']!),
+                              onTap: () => gotoToFlowerDetails(),
                               child: Stack(
                                 children: [
                                   Column(
@@ -219,7 +219,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                                           Text(
                                             "Hair . Nails . Facial",
                                             style: TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 13,
                                               color: Colors.green,
                                             ),
                                           ),
@@ -233,7 +233,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                                           Text(
                                             "360 Stillwater Rd. Palm City.",
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               overflow: TextOverflow.ellipsis,
                                               color: Colors.grey,
                                             ),
@@ -242,6 +242,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                                             children: [
                                               StarRating(
                                                 rating: 3.5,
+                                                size: 15,
                                                 color:
                                                     Colors
                                                         .orange, // Color for filled and half-filled icons
@@ -284,16 +285,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          if (index == 2) {
-            goToNotificationPage();
-          } else if (index == 1) {
-            goToMassagePage();
-          }
-        },
+        onTap: (index) => goToButttonNevigationPage(index),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
@@ -315,30 +307,24 @@ class _UsersHomePageState extends State<UsersHomePage> {
   }
 
   void search() {}
-  void goToServiceDetails(String serviceName) {
+  void goToServiceDetails() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => ServiceDetailsPage(serviceName: serviceName),
-      ),
+      MaterialPageRoute(builder: (context) => ServiceDetailsPage()),
     );
   }
 
-  void goToSalonDetails(String serviceName) {
+  void goToSalonDetails() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => ServiceDetailsPage(serviceName: serviceName),
-      ),
+      MaterialPageRoute(builder: (context) => ServiceDetailsPage()),
     );
   }
 
-  void gotoToFlowerDetails(String serviceName) {
+  void gotoToFlowerDetails() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => ServiceDetailsPage(serviceName: serviceName),
-      ),
+      MaterialPageRoute(builder: (context) => ServiceDetailsPage()),
     );
   }
 
@@ -354,6 +340,28 @@ class _UsersHomePageState extends State<UsersHomePage> {
       context,
       MaterialPageRoute(builder: (context) => MassagePage()),
     );
+  }
+
+  void gotoProfilePage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ProfilePage()),
+    );
+  }
+
+  void goToButttonNevigationPage(index) {
+    {
+      setState(() {
+        _currentIndex = index;
+      });
+      if (index == 2) {
+        goToNotificationPage();
+      } else if (index == 1) {
+        goToMassagePage();
+      } else if (index == 4) {
+        gotoProfilePage();
+      }
+    }
   }
 
   // Future<List<Map<String, dynamic>>> getData() async {

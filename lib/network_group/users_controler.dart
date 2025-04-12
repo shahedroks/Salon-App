@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
+import 'package:selon/pages/home_page/users_home_page.dart';
 
 class Users {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -14,10 +15,16 @@ class Users {
   ) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-      Navigator.pushNamed(context, "/users_home_page");
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => UsersHomePage()),
+        (predicate) => false,
+      );
       toastControler("Sign In Successfully");
     } catch (e, s) {
-      loggerControler(" this is sign-in error${e.toString()}");
+      toastControler("${e.toString()}");
+      logger.e(e.toString());
+      logger.e(s.toString());
     }
   }
 
@@ -27,10 +34,16 @@ class Users {
         email: email,
         password: password,
       );
-      Navigator.pushNamed(context, "/users_home_page");
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => UsersHomePage()),
+        (predicate) => false,
+      );
+      toastControler("Join Successfully");
     } catch (e, s) {
-      print("Users error $e");
-      print("Users error $s");
+      toastControler("${e.toString()}");
+      logger.e(e.toString());
+      logger.e(s.toString());
     }
   }
 

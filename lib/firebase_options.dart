@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'ecomers-a59f3.appspot.com',
     iosBundleId: 'com.example.selon',
   );
+
 }

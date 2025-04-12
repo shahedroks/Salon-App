@@ -4,8 +4,8 @@ import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_co
 import 'package:selon/pages/sign_related_page/signin_page.dart';
 import 'package:selon/utils/valited_checker_controler.dart';
 
+import '../../network_group/users_controler.dart';
 import '../../utils/assets_path.dart';
-import '../../utils/users_controler.dart';
 import 'custom_widget/custom_divider.dart';
 import 'custom_widget/custom_sign_controler_button.dart';
 
@@ -46,6 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.10),
                 TextFormField(
+                  controller: name,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.person),
@@ -54,6 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.02),
                 TextFormField(
+                  controller: email,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email),
@@ -63,6 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.02),
                 TextFormField(
+                  controller: number,
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                   validator: (value) {
@@ -75,6 +78,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.02),
                 TextFormField(
+                  controller: password,
                   textInputAction: TextInputAction.done,
                   obscureText: obscureText,
                   validator: (value) => checker.onPasswordChecker(value),
@@ -108,7 +112,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.05),
                 CustomSignControlerButton(
-                  onTap: signinUsers,
+                  onTap: () {
+                    signupUsers();
+                  },
                   text: "Sign In",
                   contenerColor: Color(0xff156778),
                   textColor: Colors.white,
@@ -127,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(height: sizeHeight * 0.03),
                 CustomLowerTextControlerSign(
                   firstText: "Already have an account?",
-                  secondText: "Sign Now",
+                  secondText: "SignIn Now",
                   onTap: () {
                     Navigator.pushNamed(context, "/sign_in_page");
                   },
@@ -147,7 +153,7 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {});
   }
 
-  void signinUsers() {
+  void signupUsers() {
     if (isFormKey2.currentState!.validate()) {
       users.signUpAuth(email.text, password.text, context);
       clearText();

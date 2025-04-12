@@ -46,7 +46,7 @@ class OnbroardingPage3 extends StatelessWidget {
               ),
               CustomLowerTextControlerSign(
                 firstText: "Already have an account?",
-                secondText: "Sign Now",
+                secondText: "SignUp Now",
                 onTap: () => singUpPage(context),
               ),
             ],

@@ -1,11 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:selon/pages/home_page/users_home_page.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_lower_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/forget_password_page.dart';
 import 'package:selon/utils/assets_path.dart';
 
-import '../../utils/users_controler.dart';
+import '../../network_group/users_controler.dart';
 import '../../utils/valited_checker_controler.dart';
 import 'custom_widget/custom_divider.dart';
 import 'custom_widget/custom_sign_controler_button.dart';
@@ -17,6 +17,7 @@ class SignInPage extends StatefulWidget {
   State<SignInPage> createState() => _SignInPageState();
 }
 
+FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 ValitedChecker checker = ValitedChecker();
 Users users = Users();
 TextEditingController email = TextEditingController();
@@ -46,6 +47,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.25),
                 TextFormField(
+                  controller: email,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email),
                     hintText: "Email",
@@ -59,6 +61,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.02),
                 TextFormField(
+                  controller: password,
                   obscureText: obscureText,
                   validator: (value) {
                     final result = checker.onPasswordChecker(value);
@@ -85,7 +88,9 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.05),
                 CustomSignControlerButton(
-                  onTap: signIn,
+                  onTap: () {
+                    signIn();
+                  },
                   text: "Sign In",
                   contenerColor: Color(0xff156778),
                   textColor: Colors.white,
@@ -117,14 +122,10 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void signIn() {
+  void signIn() async {
     if (isFormKey1.currentState!.validate()) {
-      // users.signInAuth(email.text, password.text, context);
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => UsersHomePage()),
-        (predicate) => false,
-      );
+      users.signInAuth(email.text, password.text, context);
+      print("Sign In Success");
       clearText();
     }
   }
