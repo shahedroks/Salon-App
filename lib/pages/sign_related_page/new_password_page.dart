@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
 import 'package:selon/pages/sign_related_page/signin_page.dart';
 
-import '../../network_group/users_controler.dart';
+import '../../network_group/Auth_controler.dart';
 import '../../utils/valited_checker_controler.dart';
 import 'custom_widget/custom_sign_controler_button.dart';
 
@@ -13,7 +13,7 @@ class NewPasswordPage extends StatefulWidget {
 }
 
 ValitedChecker checker = ValitedChecker();
-Users users = Users();
+AuthControler users = AuthControler();
 TextEditingController _newPassword = TextEditingController();
 TextEditingController _conformPassword = TextEditingController();
 final GlobalKey<FormState> isFormKey1 = GlobalKey<FormState>();

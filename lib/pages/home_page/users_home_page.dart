@@ -95,7 +95,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                 SizedBox(
                   height: height * 0.17,
                   width: width,
-                  child: CustomUpperPageview(),
+                  child: CustomUpperPageview(isPageChecker: true),
                 ),
                 SizedBox(height: height * 0.02),
                 Text("What do you want to do?"),

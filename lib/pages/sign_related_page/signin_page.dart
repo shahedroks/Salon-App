@@ -5,7 +5,7 @@ import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_co
 import 'package:selon/pages/sign_related_page/forget_password_page.dart';
 import 'package:selon/utils/assets_path.dart';
 
-import '../../network_group/users_controler.dart';
+import '../../network_group/Auth_controler.dart';
 import '../../utils/valited_checker_controler.dart';
 import 'custom_widget/custom_divider.dart';
 import 'custom_widget/custom_sign_controler_button.dart';
@@ -19,7 +19,7 @@ class SignInPage extends StatefulWidget {
 
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 ValitedChecker checker = ValitedChecker();
-Users users = Users();
+AuthControler users = AuthControler();
 TextEditingController email = TextEditingController();
 TextEditingController password = TextEditingController();
 final GlobalKey<FormState> isFormKey1 = GlobalKey<FormState>();
@@ -124,8 +124,12 @@ class _SignInPageState extends State<SignInPage> {
 
   void signIn() async {
     if (isFormKey1.currentState!.validate()) {
-      users.signInAuth(email.text, password.text, context);
-      print("Sign In Success");
+      users.signInAuth(
+        email: email.text,
+        password: password.text,
+        context: context,
+      );
+
       clearText();
     }
   }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
-import 'package:selon/pages/sign_related_page/otp_page.dart';
 
-import '../../network_group/users_controler.dart';
+import '../../network_group/Auth_controler.dart';
 import '../../utils/valited_checker_controler.dart';
 import 'custom_widget/custom_sign_controler_button.dart';
 import 'custom_widget/forget_text.dart';
@@ -14,7 +13,7 @@ class ForgetPasswordPage extends StatefulWidget {
 }
 
 ValitedChecker checker = ValitedChecker();
-Users users = Users();
+AuthControler users = AuthControler();
 TextEditingController email = TextEditingController();
 final GlobalKey<FormState> isFormKey1 = GlobalKey<FormState>();
 
@@ -41,6 +40,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                 ),
                 SizedBox(height: sizeHeight * 0.25),
                 TextFormField(
+                  controller: email,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email),
                     hintText: "Email",
@@ -56,7 +56,10 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                 ForgetText(text: "Use Phone Number"),
                 SizedBox(height: sizeHeight * 0.05),
                 CustomSignControlerButton(
-                  onTap: gotoOTPPage,
+                  onTap: () {
+                    gotoOTPPage(context);
+                    clearText();
+                  },
                   text: "Send OTP",
                   contenerColor: Color(0xff156778),
                   textColor: Colors.white,
@@ -71,11 +74,10 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     );
   }
 
-  void gotoOTPPage() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const OTPPage()),
-    );
+  void gotoOTPPage(BuildContext context) {
+    if (isFormKey1.currentState!.validate()) {
+      users.passwordResetAuth(email.text, context);
+    } else {}
   }
 
   void googleSignIn() {}

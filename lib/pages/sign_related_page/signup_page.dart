@@ -4,7 +4,7 @@ import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_co
 import 'package:selon/pages/sign_related_page/signin_page.dart';
 import 'package:selon/utils/valited_checker_controler.dart';
 
-import '../../network_group/users_controler.dart';
+import '../../network_group/Auth_controler.dart';
 import '../../utils/assets_path.dart';
 import 'custom_widget/custom_divider.dart';
 import 'custom_widget/custom_sign_controler_button.dart';
@@ -16,7 +16,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 ValitedChecker valitedChecker = ValitedChecker();
-Users users = Users();
+AuthControler users = AuthControler();
 TextEditingController name = TextEditingController();
 TextEditingController email = TextEditingController();
 TextEditingController number = TextEditingController();
@@ -155,7 +155,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void signupUsers() {
     if (isFormKey2.currentState!.validate()) {
-      users.signUpAuth(email.text, password.text, context);
+      print(email.text);
+      print(password.text);
+      users.signUpAuth(
+        name: name.text,
+        email: email.text,
+        number: number.text,
+        password: password.text,
+        context: context,
+      );
       clearText();
     }
   }
