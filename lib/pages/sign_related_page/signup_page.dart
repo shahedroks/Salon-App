@@ -155,8 +155,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void signupUsers() {
     if (isFormKey2.currentState!.validate()) {
-      print(email.text);
-      print(password.text);
       users.signUpAuth(
         name: name.text,
         email: email.text,

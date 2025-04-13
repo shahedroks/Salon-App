@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:selon/pages/onboarding_related_page/onbroarding1_page.dart';
 import 'package:selon/utils/assets_path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../home_page/users_home_page.dart';
+import '../onboarding_related_page/onbroarding1_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -34,10 +37,19 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void nextScreen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     await Future.delayed(Duration(seconds: 2));
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => OnbroardingPage1()),
-    );
+    if (prefs.getString("token") != null) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => UsersHomePage()),
+        (predicate) => false,
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => OnbroardingPage1()),
+      );
+    }
   }
 }

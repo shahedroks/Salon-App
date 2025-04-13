@@ -70,7 +70,7 @@ class AuthControler {
         name: name,
         email: email,
         number: number,
-        token: authState.user!.uid,
+        token: authState.user!.uid.toString(),
       );
       toastControler("Sign Up Successfully");
       DataController.SaveUsersData(
@@ -78,7 +78,6 @@ class AuthControler {
         name: name,
         email: email,
         Number: number,
-        password: password,
         // authState.user!.uid,
       );
     } on Exception catch (e, s) {
