@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:selon/pages/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataController {
@@ -38,5 +39,22 @@ class DataController {
     prefs.setString("email", email);
     prefs.setString("number", number ?? "");
     prefs.setString("token", token);
+  }
+
+  static Future<UsersModel?> getUsersData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+
+    if (email != null && email.isNotEmpty) {
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection("users").doc(email).get();
+
+      if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        UsersModel user = UsersModel.fromJson(data);
+        print("this is  a data ${user}"); // debug output
+      }
+    }
+    return null;
   }
 }

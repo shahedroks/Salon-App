@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:selon/network_group/data_controler.dart';
 import 'package:selon/pages/home_page/custom_wedget/custom_upper_pageview.dart';
 import 'package:selon/pages/home_page/profile_page.dart';
 import 'package:selon/pages/home_page/service_details_page.dart';
+import 'package:selon/pages/model.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
 
 import 'massage_page.dart';
@@ -17,6 +19,8 @@ class UsersHomePage extends StatefulWidget {
 
 class _UsersHomePageState extends State<UsersHomePage> {
   int _currentIndex = 0;
+  UsersModel? users;
+
   List<Map<String, String>> servicesWithLogos = [
     {
       'name': 'Beauty & Spa',
@@ -77,7 +81,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                 Row(
                   children: [
                     CustomUpperTextControlerSign(
-                      firstText: "Hello, Samantha",
+                      firstText: "${users?.name}",
                       secondText:
                           "Find the service you want, and treat yourself",
                     ),
@@ -306,6 +310,13 @@ class _UsersHomePageState extends State<UsersHomePage> {
     );
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    DataController.getUsersData();
+  }
+
   void search() {}
   void goToServiceDetails() {
     Navigator.push(
@@ -363,17 +374,4 @@ class _UsersHomePageState extends State<UsersHomePage> {
       }
     }
   }
-
-  // Future<List<Map<String, dynamic>>> getData() async {
-  //   try {
-  //     QuerySnapshot snapshot =
-  //         await FirebaseFirestore.instance.collection('user').get();
-  //     return snapshot.docs
-  //         .map((doc) => doc.data() as Map<String, dynamic>)
-  //         .toList();
-  //   } catch (e) {
-  //     print('Error fetching data: $e');
-  //     return [];
-  //   }
-  // }
 }
