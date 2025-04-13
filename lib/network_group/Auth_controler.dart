@@ -12,7 +12,7 @@ class AuthControler {
   FirebaseAuth authstatus = FirebaseAuth.instance;
   var logger = Logger(printer: PrettyPrinter());
 
-  bool isCerculer = false;
+  static bool isCerculer = false;
 
   Future<void> signInAuth({
     required String email,
@@ -26,12 +26,13 @@ class AuthControler {
         email: email,
         password: password,
       );
-      isCerculer = false;
+
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => UsersHomePage()),
         (predicate) => false,
       );
+      isCerculer = false;
       logger.i(authstatus.currentUser!.uid.toString());
       DataController.saveToSharedPref(
         name: authstatus.currentUser!.displayName,
@@ -40,10 +41,18 @@ class AuthControler {
         token: authstatus.currentUser!.uid.toString(),
       );
       toastControler("Sign In Successfully");
-    } catch (e, s) {
-      toastControler("Something went wrong please try again");
-      logger.e(e.toString());
-      logger.e(s.toString());
+    } on FirebaseAuthException catch (e, s) {
+      if (e.code == "user-not-found") {
+        toastControler("User not found");
+      } else if (e.code == "wrong-password") {
+        toastControler("Wrong password");
+      } else if (e.code == "invalid-email") {
+        toastControler("Invalid email");
+      } else if (e.code == "user-disabled") {
+        toastControler("User disabled");
+      } else {
+        toastControler("Something went wrong please try again");
+      }
     }
   }
 
@@ -60,12 +69,13 @@ class AuthControler {
         email: email,
         password: password,
       );
-      isCerculer = false;
+
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => UsersHomePage()),
         (predicate) => false,
       );
+      isCerculer = false;
       DataController.saveToSharedPref(
         name: name,
         email: email,
@@ -90,10 +100,8 @@ class AuthControler {
           toastControler("Something went wrong please try again");
         }
       } else {
-        toastControler("Something went wrong please try again");
+        toastControler("{Something went wrong please try again}");
       }
-      logger.e(e.toString());
-      logger.e(s.toString());
     }
   }
 

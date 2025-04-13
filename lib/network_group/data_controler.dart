@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DataController {
   static Logger logger = Logger(printer: PrettyPrinter());
+  static bool isCerculerDataControler = false;
   static final List<Color> _colors = [
     Colors.red,
     Colors.green,
@@ -46,13 +47,17 @@ class DataController {
     String? email = prefs.getString("email");
 
     if (email != null && email.isNotEmpty) {
+      isCerculerDataControler = true;
       DocumentSnapshot snapshot =
           await FirebaseFirestore.instance.collection("users").doc(email).get();
+      isCerculerDataControler = false;
 
       if (snapshot.exists) {
+        isCerculerDataControler = true;
         Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
         UsersModel user = UsersModel.fromJson(data);
-        print("this is  a data ${user}"); // debug output
+        isCerculerDataControler = false;
+        return user;
       }
     }
     return null;

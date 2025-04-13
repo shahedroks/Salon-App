@@ -7,6 +7,7 @@ import 'package:selon/pages/home_page/service_details_page.dart';
 import 'package:selon/pages/model.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
 
+import 'custom_wedget/custom_navigetor_bar.dart';
 import 'massage_page.dart';
 import 'notification_page.dart';
 
@@ -19,7 +20,7 @@ class UsersHomePage extends StatefulWidget {
 
 class _UsersHomePageState extends State<UsersHomePage> {
   int _currentIndex = 0;
-  UsersModel? users;
+  UsersModel? user;
 
   List<Map<String, String>> servicesWithLogos = [
     {
@@ -80,11 +81,13 @@ class _UsersHomePageState extends State<UsersHomePage> {
                 SizedBox(height: height * 0.05),
                 Row(
                   children: [
-                    CustomUpperTextControlerSign(
-                      firstText: "${users?.name}",
-                      secondText:
-                          "Find the service you want, and treat yourself",
-                    ),
+                    DataController.isCerculerDataControler == true
+                        ? Center(child: CircularProgressIndicator())
+                        : CustomUpperTextControlerSign(
+                          firstText: "${user?.name}",
+                          secondText: "${user?.email}",
+                          // "Find the service you want, and treat yourself",
+                        ),
                     Spacer(),
                     IconButton(
                       onPressed: search,
@@ -287,34 +290,26 @@ class _UsersHomePageState extends State<UsersHomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: CustomNavigetorBar(
         currentIndex: _currentIndex,
-        onTap: (index) => goToButttonNevigationPage(index),
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.markunread_outlined),
-            label: 'Massage',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notification',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorites',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+        goToButttonNevigationPage: goToButttonNevigationPage,
       ),
     );
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    DataController.getUsersData();
+    loadUser();
+  }
+
+  Future<void> loadUser() async {
+    DataController.isCerculerDataControler = true;
+    UsersModel? userData = await DataController.getUsersData();
+    setState(() {
+      user = userData;
+      DataController.isCerculerDataControler = false;
+    });
   }
 
   void search() {}
