@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:selon/pages/model.dart';
+import 'package:selon/model_controler/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataController {

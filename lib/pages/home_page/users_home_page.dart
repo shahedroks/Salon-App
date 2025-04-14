@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:logger/logger.dart';
+import 'package:selon/model_controler/model.dart';
+import 'package:selon/model_controler/service_model.dart';
 import 'package:selon/network_group/data_controler.dart';
+import 'package:selon/network_group/image_controler.dart';
 import 'package:selon/pages/home_page/custom_wedget/custom_upper_pageview.dart';
 import 'package:selon/pages/home_page/profile_page.dart';
 import 'package:selon/pages/home_page/service_details_page.dart';
-import 'package:selon/pages/model.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
 
 import 'custom_wedget/custom_navigetor_bar.dart';
@@ -84,9 +87,9 @@ class _UsersHomePageState extends State<UsersHomePage> {
                     DataController.isCerculerDataControler == true
                         ? Center(child: CircularProgressIndicator())
                         : CustomUpperTextControlerSign(
-                          firstText: "${user?.name}",
-                          secondText: "${user?.email}",
-                          // "Find the service you want, and treat yourself",
+                          firstText: "Hello, ${user?.name}",
+                          secondText:
+                              "Find the service you want, and treat yourself",
                         ),
                     Spacer(),
                     IconButton(
@@ -297,10 +300,16 @@ class _UsersHomePageState extends State<UsersHomePage> {
     );
   }
 
+  Logger logger = Logger(printer: PrettyPrinter());
+
+  List<ServiceModel> serviceModel = [];
+
   @override
   void initState() {
     super.initState();
     loadUser();
+    loadServices();
+logger.i()
   }
 
   Future<void> loadUser() async {
@@ -308,6 +317,16 @@ class _UsersHomePageState extends State<UsersHomePage> {
     UsersModel? userData = await DataController.getUsersData();
     setState(() {
       user = userData;
+      DataController.isCerculerDataControler = false;
+    });
+  }
+
+  void loadServices() async {
+    DataController.isCerculerDataControler = true;
+    List<ServiceModel> services = await ImageController.getService() ?? [];
+
+    setState(() {
+      serviceModel = services;
       DataController.isCerculerDataControler = false;
     });
   }
