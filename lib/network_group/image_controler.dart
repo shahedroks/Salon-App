@@ -18,7 +18,9 @@ class ImageController {
           await FirebaseFirestore.instance.collection("service").get();
       return snapshot.docs
           .map(
-            (doc) => ServiceModel.fromJson(doc.data() as Map<String, dynamic>),
+            (doc) =>
+                ServiceModel.fromJson(doc.data() as Map<String, dynamic>)
+                  ..id = doc.id,
           )
           .toList();
     } catch (e) {

@@ -118,7 +118,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                       shrinkWrap: true,
                       physics:
                           NeverScrollableScrollPhysics(), // To prevent scrolling conflict with parent
-                      itemCount: servicesWithLogos.length,
+                      itemCount: serviceModel.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4, // 4 items per row
                         crossAxisSpacing: 16,
@@ -126,7 +126,8 @@ class _UsersHomePageState extends State<UsersHomePage> {
                         childAspectRatio: 0.8, // Adjust for icon + text layout
                       ),
                       itemBuilder: (context, index) {
-                        final service = servicesWithLogos[index];
+                        final service = serviceModel[index];
+                        final ser = servicesWithLogos[index];
                         return GestureDetector(
                           onTap: () => goToServiceDetails(),
                           child: Column(
@@ -134,7 +135,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                             children: [
                               Card(
                                 child: Image.network(
-                                  service['logo']!,
+                                  ser['logo']!,
                                   width: 50,
                                   height: 50,
                                   fit: BoxFit.cover,
@@ -142,9 +143,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                               ),
                               SizedBox(height: 8.0),
                               Text(
-                                service['name']!.split(
-                                  ' ',
-                                )[0], // only first word
+                                "${service.name}", // only first word
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -309,7 +308,6 @@ class _UsersHomePageState extends State<UsersHomePage> {
     super.initState();
     loadUser();
     loadServices();
-logger.i()
   }
 
   Future<void> loadUser() async {
@@ -324,7 +322,6 @@ logger.i()
   void loadServices() async {
     DataController.isCerculerDataControler = true;
     List<ServiceModel> services = await ImageController.getService() ?? [];
-
     setState(() {
       serviceModel = services;
       DataController.isCerculerDataControler = false;
