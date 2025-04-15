@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:crop_your_image/crop_your_image.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfilePhotoPicker extends StatefulWidget {
@@ -15,57 +15,45 @@ class _ProfilePhotoPickerState extends State<ProfilePhotoPicker> {
   XFile? _pickedImage;
 
   Future<void> _pickAndCropImage(ImageSource source) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: source);
+    final pickedFile = await ImagePicker().pickImage(source: source);
 
-    if (pickedFile != null) {
-      final CroppedFile? croppedFile = await ImageCropper().cropImage(
-        sourcePath: pickedFile.path,
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: 'Crop Image',
-            toolbarColor: Colors.deepPurple,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false,
-          ),
-          IOSUiSettings(title: 'Crop Image'),
-          WebUiSettings(context: context),
-        ],
-      );
-
-      if (croppedFile != null) {
-        setState(() {
-          _pickedImage = XFile(croppedFile.path);
-        });
-      }
+    if (_pickedImage != null) {
+      setState(() {
+        _pickedImage = pickedFile;
+      });
     }
   }
 
   void _showImagePickerSheet() {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
+    final _controller = CropController();
     showModalBottomSheet(
       context: context,
       builder:
           (context) => Container(
-            height: 200,
+            height: height * 0.25,
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 ListTile(
                   leading: const Icon(Icons.camera_alt),
-                  title: const Text("Take from Camera"),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _pickAndCropImage(ImageSource.camera);
-                  },
+                  title: Text("${_pickedImage?.name ?? "Select"} from Camera"),
+                  onTap: () => _pickAndCropImage(ImageSource.camera),
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo),
-                  title: const Text("Choose from Gallery"),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _pickAndCropImage(ImageSource.gallery);
-                  },
+                  title: Text("${_pickedImage?.name ?? "Select"} from Gallery"),
+                  onTap: () => _pickAndCropImage(ImageSource.gallery),
+                ),
+
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade400,
+                  ),
+                  child: Text("Save"),
                 ),
               ],
             ),
@@ -75,11 +63,14 @@ class _ProfilePhotoPickerState extends State<ProfilePhotoPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
     return InkWell(
       onTap: _showImagePickerSheet,
       child: CircleAvatar(
-        radius: 50,
-        backgroundColor: Colors.grey.shade300,
+        radius: 20,
+        backgroundColor: Colors.transparent.withOpacity(0.2),
         backgroundImage:
             _pickedImage != null ? FileImage(File(_pickedImage!.path)) : null,
         child:
