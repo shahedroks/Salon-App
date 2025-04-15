@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:selon/model_controler/model.dart';
+import 'package:selon/model_controler/users_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataController {
@@ -42,15 +42,14 @@ class DataController {
     prefs.setString("token", token);
   }
 
-  static Future<UsersModel?> getUsersData() async {
+  static Future<UsersModel?> getSignUsersData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    FirebaseFirestore firestore = await FirebaseFirestore.instance;
     String? email = prefs.getString("email");
-
+    isCerculerDataControler = true;
     if (email != null && email.isNotEmpty) {
-      isCerculerDataControler = true;
       DocumentSnapshot snapshot =
           await FirebaseFirestore.instance.collection("users").doc(email).get();
-      isCerculerDataControler = false;
 
       if (snapshot.exists) {
         isCerculerDataControler = true;
@@ -61,5 +60,14 @@ class DataController {
       }
     }
     return null;
+  }
+
+  static Future<List<UsersModel>?> getAllUsers() async {
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance.collection("users").get();
+
+    return snapshot.docs.map((doc) {
+      return UsersModel.fromJson(doc.data() as Map<String, dynamic>);
+    }).toList();
   }
 }

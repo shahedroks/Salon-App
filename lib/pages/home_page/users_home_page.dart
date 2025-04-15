@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:logger/logger.dart';
-import 'package:selon/model_controler/model.dart';
 import 'package:selon/model_controler/service_model.dart';
+import 'package:selon/model_controler/users_model.dart';
 import 'package:selon/network_group/data_controler.dart';
 import 'package:selon/network_group/image_controler.dart';
 import 'package:selon/pages/home_page/custom_wedget/custom_upper_pageview.dart';
@@ -23,7 +23,6 @@ class UsersHomePage extends StatefulWidget {
 
 class _UsersHomePageState extends State<UsersHomePage> {
   int _currentIndex = 0;
-  UsersModel? user;
 
   List<Map<String, String>> servicesWithLogos = [
     {
@@ -127,7 +126,6 @@ class _UsersHomePageState extends State<UsersHomePage> {
                       ),
                       itemBuilder: (context, index) {
                         final service = serviceModel[index];
-                        final ser = servicesWithLogos[index];
                         return GestureDetector(
                           onTap: () => goToServiceDetails(),
                           child: Column(
@@ -135,7 +133,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                             children: [
                               Card(
                                 child: Image.network(
-                                  ser['logo']!,
+                                  service.image!,
                                   width: 50,
                                   height: 50,
                                   fit: BoxFit.cover,
@@ -157,13 +155,13 @@ class _UsersHomePageState extends State<UsersHomePage> {
                   ],
                 ),
                 SizedBox(height: height * 0.02),
-                Text("Salon And Flower Shop"),
+                Text("Who do you want to go with?"),
                 SizedBox(height: height * 0.02),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children:
-                        servicesWithLogos.map((service) {
+                        usersList.map((service) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 8.0,
@@ -180,7 +178,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                                     ),
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
-                                      image: NetworkImage(service['logo']!),
+                                      image: NetworkImage("${service.image}"),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -302,19 +300,31 @@ class _UsersHomePageState extends State<UsersHomePage> {
   Logger logger = Logger(printer: PrettyPrinter());
 
   List<ServiceModel> serviceModel = [];
+  List<UsersModel> usersList = [];
+  UsersModel? user;
 
   @override
   void initState() {
     super.initState();
     loadUser();
     loadServices();
+    loadUsersList();
   }
 
   Future<void> loadUser() async {
     DataController.isCerculerDataControler = true;
-    UsersModel? userData = await DataController.getUsersData();
+    UsersModel? userData = await DataController.getSignUsersData();
     setState(() {
       user = userData;
+      DataController.isCerculerDataControler = false;
+    });
+  }
+
+  Future<void> loadUsersList() async {
+    DataController.isCerculerDataControler = true;
+    List<UsersModel> users = await DataController.getAllUsers() ?? [];
+    setState(() {
+      usersList = users;
       DataController.isCerculerDataControler = false;
     });
   }

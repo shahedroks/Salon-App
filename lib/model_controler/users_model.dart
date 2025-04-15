@@ -1,6 +1,7 @@
 class UsersModel {
   final String? id;
   final String? name;
+  final String? username;
   final String? email;
   final String? phone;
   final String? image;
@@ -9,6 +10,7 @@ class UsersModel {
   UsersModel({
     this.id,
     this.name,
+    this.username,
     this.email,
     this.phone,
     this.image,
@@ -19,6 +21,7 @@ class UsersModel {
     return UsersModel(
       id: json['id'] ?? "",
       name: json['name'] ?? "",
+      username: json['username'] ?? "",
       email: json['email'] ?? "",
       phone: json['phone'] ?? "",
       image: json['image'] ?? "",
@@ -30,6 +33,7 @@ class UsersModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['username'] = username;
     data['email'] = email;
     data['phone'] = phone;
     data['image'] = image;
@@ -39,6 +43,6 @@ class UsersModel {
 
   @override
   String toString() {
-    return 'UsersModel(id: $id, name: $name, email: $email, phone: $phone, image: $image, token: $token)';
+    return 'UsersModel(id: $id, name: $name, users:$username, email: $email, phone: $phone, image: $image, token: $token)';
   }
 }
