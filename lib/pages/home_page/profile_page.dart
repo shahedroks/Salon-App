@@ -17,6 +17,17 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
+TextEditingController bio = TextEditingController(
+  text: profileUser?.bio ?? "You Bio",
+);
+TextEditingController name = TextEditingController(
+  text: profileUser?.name ?? "You Name",
+);
+TextEditingController address = TextEditingController();
+TextEditingController gender = TextEditingController();
+TextEditingController number = TextEditingController();
+TextEditingController username = TextEditingController();
+
 UsersModel? profileUser;
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -26,164 +37,337 @@ class _ProfilePageState extends State<ProfilePage> {
     final width = size.width;
     final height = size.height;
     return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(
-            height: height,
-            width: width,
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                  child: Container(
-                    height: height * 0.3,
-                    width: width,
-                    decoration: BoxDecoration(),
-                    child: Image.asset(
-                      "${ImagesPath.covoreImage}",
-                      fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: height,
+              width: width,
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                    child: Container(
+                      height: height * 0.3,
+                      width: width,
+                      decoration: BoxDecoration(),
+                      child: Image.asset(
+                        "${ImagesPath.covoreImage}",
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
 
-                Positioned(
-                  top: height * 0.24,
-                  left: 0,
-                  right: 0,
+                  Positioned(
+                    top: height * 0.24,
+                    left: 0,
+                    right: 0,
 
-                  child: Container(
-                    height: height * 0.7,
-                    width: width,
-                    margin: const EdgeInsets.symmetric(horizontal: 15),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
+                    child:
+                        profileChecker == true
+                            ? Container(
+                              height: height * 0.7,
+                              width: width,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 5),
+                                  ),
+                                ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(Icons.settings),
+                                        Spacer(),
+                                        Icon(Icons.edit_calendar_outlined),
+                                      ],
+                                    ),
+                                    SizedBox(height: height * 0.05),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: width * 0.05,
+                                      ),
+                                      child: Text(
+                                        "${profileUser?.bio}",
+                                        style: const TextStyle(fontSize: 10),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.person),
+                                      title: const Text("Name"),
+                                      subtitle: Text("${profileUser?.name}"),
+
+                                      onTap: () {},
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.email),
+                                      title: const Text("Email"),
+                                      subtitle: Text("${profileUser?.email}"),
+                                      trailing: const Icon(
+                                        Icons.verified_user_outlined,
+                                        color: Colors.green,
+                                      ),
+                                      onTap: () {},
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(
+                                        Icons.location_city_sharp,
+                                      ),
+                                      title: const Text("Address"),
+                                      subtitle: Text("${profileUser?.address}"),
+                                      onTap: () {},
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.man),
+                                      title: const Text("Gender"),
+                                      subtitle: Text("${profileUser?.name}"),
+                                      onTap: () {},
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.call),
+                                      title: const Text("Number"),
+                                      subtitle: Text("${profileUser?.number}"),
+                                      trailing: const Icon(
+                                        Icons.verified_user_outlined,
+                                        color: Colors.green,
+                                      ),
+                                      onTap: () {},
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(
+                                        Icons.drive_file_rename_outline,
+                                      ),
+                                      title: const Text("Username"),
+                                      subtitle: Text(
+                                        "${profileUser?.username}",
+                                      ),
+                                      onTap: () {},
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.login),
+                                      title: const Text("Logout"),
+                                      onTap: () {
+                                        Logout();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                            : Container(
+                              height: height * 0.8,
+                              width: width,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 5),
+                                  ),
+                                ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: height * 0.1),
+                                    SizedBox(
+                                      height: height * 0.11,
+                                      child: TextFormField(
+                                        maxLines: 3,
+                                        controller: bio,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(Icons.add),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          hintText: "+Bio",
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.01),
+                                    SizedBox(
+                                      height: height * 0.06,
+                                      child: TextFormField(
+                                        controller: name,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(Icons.person),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          hintText: "Name",
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.01),
+                                    SizedBox(
+                                      height: height * 0.06,
+                                      child: TextFormField(
+                                        controller: email,
+                                        enabled: false,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(Icons.email),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          hintText: "Email",
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.01),
+                                    SizedBox(
+                                      height: height * 0.06,
+                                      child: TextFormField(
+                                        controller: address,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                            Icons.location_city_sharp,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          hintText: "Address",
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.01),
+                                    SizedBox(
+                                      height: height * 0.06,
+                                      child: TextFormField(
+                                        controller: bio,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(Icons.add),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          hintText: "genter",
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.01),
+                                    SizedBox(
+                                      height: height * 0.06,
+                                      child: TextFormField(
+                                        controller: number,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(Icons.call),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          hintText: "Number",
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.01),
+                                    SizedBox(
+                                      height: height * 0.06,
+                                      child: TextFormField(
+                                        controller: username,
+                                        decoration: InputDecoration(
+                                          prefixIcon: Icon(
+                                            Icons.drive_file_rename_outline,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          hintText: "username",
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.01),
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10),
+                                          ),
+                                        ),
+                                        backgroundColor: Colors.green.shade400,
+                                      ),
+                                      child: Text("Done"),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                  ),
+                  Positioned(
+                    top: height * 0.18,
+                    right: width * 0.35,
+
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 60,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey, width: 3),
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  "${profileUser?.image ?? ImagesPath.networkImage}",
+                                ),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Icon(Icons.verified, color: Colors.green),
                         ),
                       ],
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.settings),
-                              Spacer(),
-                              Icon(Icons.edit_calendar_outlined),
-                            ],
-                          ),
-                          SizedBox(height: height * 0.05),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: width * 0.05,
-                            ),
-                            child: Text(
-                              "${profileUser?.bio}",
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.person),
-                            title: const Text("Name"),
-                            subtitle: Text("${profileUser?.name}"),
-
-                            onTap: () {},
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.email),
-                            title: const Text("Email"),
-                            subtitle: Text("${profileUser?.email}"),
-                            trailing: const Icon(
-                              Icons.verified_user_outlined,
-                              color: Colors.green,
-                            ),
-                            onTap: () {},
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.location_city_sharp),
-                            title: const Text("Address"),
-                            subtitle: Text("${profileUser?.address}"),
-                            onTap: () {},
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.man),
-                            title: const Text("Gender"),
-                            subtitle: Text("${profileUser?.name}"),
-                            onTap: () {},
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.call),
-                            title: const Text("Number"),
-                            subtitle: Text("${profileUser?.number}"),
-                            trailing: const Icon(
-                              Icons.verified_user_outlined,
-                              color: Colors.green,
-                            ),
-                            onTap: () {},
-                          ),
-                          ListTile(
-                            leading: const Icon(
-                              Icons.drive_file_rename_outline,
-                            ),
-                            title: const Text("Username"),
-                            subtitle: Text("${profileUser?.username}"),
-                            onTap: () {},
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.login),
-                            title: const Text("Logout"),
-                            onTap: () {
-                              Logout();
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
-                ),
-                Positioned(
-                  top: height * 0.18,
-                  right: width * 0.35,
-
-                  child: Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 60,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 3),
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                "${profileUser?.image ?? ImagesPath.networkImage}",
-                              ),
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Icon(Icons.verified, color: Colors.green),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -195,6 +379,7 @@ class _ProfilePageState extends State<ProfilePage> {
     // TODO: implement initState
     super.initState();
     loadUserData();
+    name;
   }
 
   File? _pickedImage;
@@ -246,8 +431,17 @@ class _ProfilePageState extends State<ProfilePage> {
     DataController.isCerculerDataControler = true;
     var modelUsers = await DataController.getSignUsersData();
     DataController.isCerculerDataControler = false;
+
     setState(() {
       profileUser = modelUsers;
+
+      bio.text = profileUser?.bio ?? "You Bio";
+      name.text = profileUser?.name ?? "You Name";
+      email.text = profileUser?.email ?? "";
+      address.text = profileUser?.address ?? "You Address";
+      gender.text = profileUser?.bio ?? "You Bio";
+      number.text = profileUser?.number ?? "You Number";
+      username.text = profileUser?.username ?? "You username";
     });
   }
 
@@ -289,4 +483,21 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void updateProfileImage(String? email) async {}
+
+  void clearControler(){
+
+  }
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    bio.dispose();
+    name.dispose();
+    email.dispose();
+    address.dispose();
+    number.dispose();
+  username.dispose()
+  }
 }
