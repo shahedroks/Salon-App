@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../network_group/data_controler.dart';
 import '../sign_related_page/signin_page.dart';
+import 'custom_wedget/custom_cover_image.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -29,6 +30,7 @@ TextEditingController number = TextEditingController();
 TextEditingController username = TextEditingController();
 
 UsersModel? profileUser;
+String selectedGender = '';
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
@@ -45,21 +47,25 @@ class _ProfilePageState extends State<ProfilePage> {
               width: width,
               child: Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    child: Container(
-                      height: height * 0.3,
-                      width: width,
-                      decoration: BoxDecoration(),
-                      child: Image.asset(
-                        "${ImagesPath.covoreImage}",
-                        fit: BoxFit.cover,
+                  cover_image_widget(),
+                  profileChecker == false
+                      ? Text("")
+                      : Positioned(
+                        top: 150,
+                        child: GestureDetector(
+                          onTap: () {
+                            updateCoverImage();
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red.shade100,
+                            child: Icon(
+                              Icons.camera_alt,
+                              size: 30,
+                              color: Colors.deepOrange,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
 
                   Positioned(
                     top: height * 0.24,
@@ -67,9 +73,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     right: 0,
 
                     child:
-                        profileChecker == true
+                        profileChecker == false
                             ? Container(
-                              height: height * 0.7,
+                              height: height * 0.72,
                               width: width,
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 15,
@@ -93,7 +99,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                       children: [
                                         Icon(Icons.settings),
                                         Spacer(),
-                                        Icon(Icons.edit_calendar_outlined),
+                                        InkWell(
+                                          onTap: () {
+                                            profileChecker = true;
+                                            setState(() {});
+                                            print(profileChecker);
+                                          },
+                                          child: Icon(
+                                            Icons.edit_calendar_outlined,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     SizedBox(height: height * 0.05),
@@ -171,7 +186,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             )
                             : Container(
-                              height: height * 0.8,
+                              height: height * 0.70,
                               width: width,
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 15,
@@ -189,147 +204,174 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(20),
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: height * 0.1),
-                                    SizedBox(
-                                      height: height * 0.11,
-                                      child: TextFormField(
-                                        maxLines: 3,
-                                        controller: bio,
-                                        decoration: InputDecoration(
-                                          prefixIcon: Icon(Icons.add),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: height * 0.1),
+                                      SizedBox(
+                                        height: height * 0.13,
+                                        child: TextFormField(
+                                          maxLines: 3,
+                                          controller: bio,
+                                          decoration: InputDecoration(
+                                            prefixIcon: Icon(Icons.add),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            hintText: "+Bio",
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: height * 0.01),
+                                      SizedBox(
+                                        height: height * 0.06,
+                                        child: TextFormField(
+                                          controller: name,
+                                          decoration: InputDecoration(
+                                            prefixIcon: Icon(Icons.person),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            hintText: "Name",
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: height * 0.01),
+                                      SizedBox(
+                                        height: height * 0.06,
+                                        child: TextFormField(
+                                          controller: email,
+                                          enabled: false,
+                                          decoration: InputDecoration(
+                                            prefixIcon: Icon(Icons.email),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            hintText: "Email",
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: height * 0.01),
+                                      SizedBox(
+                                        height: height * 0.06,
+                                        child: TextFormField(
+                                          controller: address,
+                                          decoration: InputDecoration(
+                                            prefixIcon: Icon(
+                                              Icons.location_city_sharp,
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            hintText: "Address",
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: height * 0.01),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Select Gender:',
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                          SizedBox(height: height * 0.01),
+                                          RadioListTile(
+                                            title: Text("Male"),
+                                            value: "Male",
+                                            groupValue: selectedGender,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedGender = value!;
+                                              });
+                                            },
+                                          ),
+                                          RadioListTile(
+                                            title: Text("Female"),
+                                            value: "Female",
+                                            groupValue: selectedGender,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedGender = value!;
+                                              });
+                                            },
+                                          ),
+                                          SizedBox(height: height * 0.01),
+                                          Text(
+                                            'Selected: ${selectedGender}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: height * 0.01),
+                                      SizedBox(
+                                        height: height * 0.06,
+                                        child: TextFormField(
+                                          controller: number,
+                                          decoration: InputDecoration(
+                                            prefixIcon: Icon(Icons.call),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            hintText: "Number",
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: height * 0.01),
+                                      SizedBox(
+                                        height: height * 0.06,
+                                        child: TextFormField(
+                                          controller: username,
+                                          decoration: InputDecoration(
+                                            prefixIcon: Icon(
+                                              Icons.drive_file_rename_outline,
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            hintText: "username",
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: height * 0.01),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          profileUpdate();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(10),
                                             ),
                                           ),
-                                          hintText: "+Bio",
+                                          backgroundColor:
+                                              Colors.green.shade400,
                                         ),
+                                        child: Text("Done"),
                                       ),
-                                    ),
-                                    SizedBox(height: height * 0.01),
-                                    SizedBox(
-                                      height: height * 0.06,
-                                      child: TextFormField(
-                                        controller: name,
-                                        decoration: InputDecoration(
-                                          prefixIcon: Icon(Icons.person),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          hintText: "Name",
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: height * 0.01),
-                                    SizedBox(
-                                      height: height * 0.06,
-                                      child: TextFormField(
-                                        controller: email,
-                                        enabled: false,
-                                        decoration: InputDecoration(
-                                          prefixIcon: Icon(Icons.email),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          hintText: "Email",
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: height * 0.01),
-                                    SizedBox(
-                                      height: height * 0.06,
-                                      child: TextFormField(
-                                        controller: address,
-                                        decoration: InputDecoration(
-                                          prefixIcon: Icon(
-                                            Icons.location_city_sharp,
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          hintText: "Address",
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: height * 0.01),
-                                    SizedBox(
-                                      height: height * 0.06,
-                                      child: TextFormField(
-                                        controller: bio,
-                                        decoration: InputDecoration(
-                                          prefixIcon: Icon(Icons.add),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          hintText: "genter",
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: height * 0.01),
-                                    SizedBox(
-                                      height: height * 0.06,
-                                      child: TextFormField(
-                                        controller: number,
-                                        decoration: InputDecoration(
-                                          prefixIcon: Icon(Icons.call),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          hintText: "Number",
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: height * 0.01),
-                                    SizedBox(
-                                      height: height * 0.06,
-                                      child: TextFormField(
-                                        controller: username,
-                                        decoration: InputDecoration(
-                                          prefixIcon: Icon(
-                                            Icons.drive_file_rename_outline,
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          hintText: "username",
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: height * 0.01),
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10),
-                                          ),
-                                        ),
-                                        backgroundColor: Colors.green.shade400,
-                                      ),
-                                      child: Text("Done"),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -355,11 +397,29 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Icon(Icons.verified, color: Colors.green),
-                        ),
+                        profileChecker == false
+                            ? Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Icon(Icons.verified, color: Colors.green),
+                            )
+                            : Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  upProfileImage();
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.red.shade100,
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    size: 30,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ),
                       ],
                     ),
                   ),
@@ -380,6 +440,12 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     loadUserData();
     name;
+  }
+
+  void updateCoverImage() {}
+  void upProfileImage() {}
+  void profileUpdate() {
+    clearControler();
   }
 
   File? _pickedImage;
@@ -484,10 +550,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void updateProfileImage(String? email) async {}
 
-  void clearControler(){
-
+  void clearControler() {
+    bio.clear();
+    name.clear();
+    email.clear();
+    address.clear();
+    number.clear();
+    username.clear();
   }
-
 
   @override
   void dispose() {
@@ -498,6 +568,6 @@ class _ProfilePageState extends State<ProfilePage> {
     email.dispose();
     address.dispose();
     number.dispose();
-  username.dispose()
+    username.dispose();
   }
 }
