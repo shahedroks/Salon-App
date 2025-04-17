@@ -1,14 +1,17 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:selon/model_controler/users_model.dart';
+import 'package:selon/network_group/image_controler.dart';
+import 'package:selon/pages/sign_related_page/custom_widget/custom_sign_controler_button.dart';
 import 'package:selon/utils/assets_path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../network_group/data_controler.dart';
 import '../sign_related_page/signin_page.dart';
+import 'custom_wedget/custom-textformfiled_profile_update.dart';
 import 'custom_wedget/custom_cover_image.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -47,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
               width: width,
               child: Stack(
                 children: [
-                  cover_image_widget(),
+                  cover_image_widget(coverImagePicked: _coverPickedImage),
                   profileChecker == false
                       ? Text("")
                       : Positioned(
@@ -55,6 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: GestureDetector(
                           onTap: () {
                             updateCoverImage();
+                            isCover = true;
                           },
                           child: CircleAvatar(
                             backgroundColor: Colors.red.shade100,
@@ -74,303 +78,257 @@ class _ProfilePageState extends State<ProfilePage> {
 
                     child:
                         profileChecker == false
-                            ? Container(
-                              height: height * 0.72,
-                              width: width,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 15,
+                            ? Visibility(
+                              visible:
+                                  DataController.isCerculerDataControler = true,
+                              replacement: CircularProgressIndicator(
+                                color: Colors.green,
                               ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 5),
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(Icons.settings),
-                                        Spacer(),
-                                        InkWell(
-                                          onTap: () {
-                                            profileChecker = true;
-                                            setState(() {});
-                                            print(profileChecker);
-                                          },
-                                          child: Icon(
-                                            Icons.edit_calendar_outlined,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: height * 0.05),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: width * 0.05,
-                                      ),
-                                      child: Text(
-                                        "${profileUser?.bio}",
-                                        style: const TextStyle(fontSize: 10),
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(Icons.person),
-                                      title: const Text("Name"),
-                                      subtitle: Text("${profileUser?.name}"),
-
-                                      onTap: () {},
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(Icons.email),
-                                      title: const Text("Email"),
-                                      subtitle: Text("${profileUser?.email}"),
-                                      trailing: const Icon(
-                                        Icons.verified_user_outlined,
-                                        color: Colors.green,
-                                      ),
-                                      onTap: () {},
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(
-                                        Icons.location_city_sharp,
-                                      ),
-                                      title: const Text("Address"),
-                                      subtitle: Text("${profileUser?.address}"),
-                                      onTap: () {},
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(Icons.man),
-                                      title: const Text("Gender"),
-                                      subtitle: Text("${profileUser?.name}"),
-                                      onTap: () {},
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(Icons.call),
-                                      title: const Text("Number"),
-                                      subtitle: Text("${profileUser?.number}"),
-                                      trailing: const Icon(
-                                        Icons.verified_user_outlined,
-                                        color: Colors.green,
-                                      ),
-                                      onTap: () {},
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(
-                                        Icons.drive_file_rename_outline,
-                                      ),
-                                      title: const Text("Username"),
-                                      subtitle: Text(
-                                        "${profileUser?.username}",
-                                      ),
-                                      onTap: () {},
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(Icons.login),
-                                      title: const Text("Logout"),
-                                      onTap: () {
-                                        Logout();
-                                      },
+                              child: Container(
+                                height: height * 0.72,
+                                width: width,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 15,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 5),
                                     ),
                                   ],
                                 ),
-                              ),
-                            )
-                            : Container(
-                              height: height * 0.70,
-                              width: width,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 5),
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: SingleChildScrollView(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     children: [
-                                      SizedBox(height: height * 0.1),
-                                      SizedBox(
-                                        height: height * 0.13,
-                                        child: TextFormField(
-                                          maxLines: 3,
-                                          controller: bio,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.add),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide.none,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            hintText: "+Bio",
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: height * 0.01),
-                                      SizedBox(
-                                        height: height * 0.06,
-                                        child: TextFormField(
-                                          controller: name,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.person),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide.none,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            hintText: "Name",
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: height * 0.01),
-                                      SizedBox(
-                                        height: height * 0.06,
-                                        child: TextFormField(
-                                          controller: email,
-                                          enabled: false,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.email),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide.none,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            hintText: "Email",
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: height * 0.01),
-                                      SizedBox(
-                                        height: height * 0.06,
-                                        child: TextFormField(
-                                          controller: address,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.location_city_sharp,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide.none,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            hintText: "Address",
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: height * 0.01),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      Row(
                                         children: [
-                                          Text(
-                                            'Select Gender:',
-                                            style: TextStyle(fontSize: 16),
-                                          ),
-                                          SizedBox(height: height * 0.01),
-                                          RadioListTile(
-                                            title: Text("Male"),
-                                            value: "Male",
-                                            groupValue: selectedGender,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                selectedGender = value!;
-                                              });
+                                          Icon(Icons.settings),
+                                          Spacer(),
+                                          InkWell(
+                                            onTap: () {
+                                              profileChecker = true;
+                                              setState(() {});
+                                              print(profileChecker);
                                             },
-                                          ),
-                                          RadioListTile(
-                                            title: Text("Female"),
-                                            value: "Female",
-                                            groupValue: selectedGender,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                selectedGender = value!;
-                                              });
-                                            },
-                                          ),
-                                          SizedBox(height: height * 0.01),
-                                          Text(
-                                            'Selected: ${selectedGender}',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                            child: Icon(
+                                              Icons.edit_calendar_outlined,
                                             ),
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: height * 0.01),
-                                      SizedBox(
-                                        height: height * 0.06,
-                                        child: TextFormField(
-                                          controller: number,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.call),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide.none,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            hintText: "Number",
-                                          ),
+                                      SizedBox(height: height * 0.05),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: width * 0.05,
+                                        ),
+                                        child: Text(
+                                          "${profileUser?.bio}",
+                                          style: const TextStyle(fontSize: 10),
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      SizedBox(height: height * 0.01),
-                                      SizedBox(
-                                        height: height * 0.06,
-                                        child: TextFormField(
-                                          controller: username,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.drive_file_rename_outline,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide.none,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            hintText: "username",
-                                          ),
-                                        ),
+                                      ListTile(
+                                        leading: const Icon(Icons.person),
+                                        title: const Text("Name"),
+                                        subtitle: Text("${profileUser?.name}"),
+
+                                        onTap: () {},
                                       ),
-                                      SizedBox(height: height * 0.01),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          profileUpdate();
+                                      ListTile(
+                                        leading: const Icon(Icons.email),
+                                        title: const Text("Email"),
+                                        subtitle: Text("${profileUser?.email}"),
+                                        trailing: const Icon(
+                                          Icons.verified_user_outlined,
+                                          color: Colors.green,
+                                        ),
+                                        onTap: () {},
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(
+                                          Icons.location_city_sharp,
+                                        ),
+                                        title: const Text("Address"),
+                                        subtitle: Text(
+                                          "${profileUser?.address}",
+                                        ),
+                                        onTap: () {},
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(Icons.man),
+                                        title: const Text("Gender"),
+                                        subtitle: Text("${profileUser?.name}"),
+                                        onTap: () {},
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(Icons.call),
+                                        title: const Text("Number"),
+                                        subtitle: Text(
+                                          "${profileUser?.number}",
+                                        ),
+                                        trailing: const Icon(
+                                          Icons.verified_user_outlined,
+                                          color: Colors.green,
+                                        ),
+                                        onTap: () {},
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(
+                                          Icons.drive_file_rename_outline,
+                                        ),
+                                        title: const Text("Username"),
+                                        subtitle: Text(
+                                          "${profileUser?.username}",
+                                        ),
+                                        onTap: () {},
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(Icons.login),
+                                        title: const Text("Logout"),
+                                        onTap: () {
+                                          Logout();
                                         },
-                                        style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                          ),
-                                          backgroundColor:
-                                              Colors.green.shade400,
-                                        ),
-                                        child: Text("Done"),
                                       ),
                                     ],
+                                  ),
+                                ),
+                              ),
+                            )
+                            : Visibility(
+                              visible:
+                                  DataController.isCerculerDataControler = true,
+                              replacement: CircularProgressIndicator(
+                                color: Colors.green,
+                              ),
+                              child: Container(
+                                height: height * 0.70,
+                                width: width,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 15,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 5),
+                                    ),
+                                  ],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: height * 0.1),
+                                        CustomTextFormFieldProfileUpdate(
+                                          name: "Bio",
+                                          prefixIcon: Icons.add,
+                                          controlerName: bio,
+                                          biofield: true,
+                                        ),
+                                        SizedBox(height: height * 0.01),
+                                        CustomTextFormFieldProfileUpdate(
+                                          name: "Name",
+                                          prefixIcon: Icons.person,
+                                          controlerName: name,
+                                        ),
+                                        SizedBox(height: height * 0.01),
+                                        CustomTextFormFieldProfileUpdate(
+                                          name: "Email",
+                                          prefixIcon: Icons.email,
+                                          controlerName: email,
+                                        ),
+                                        SizedBox(height: height * 0.01),
+                                        CustomTextFormFieldProfileUpdate(
+                                          name: "Address",
+                                          prefixIcon: Icons.location_city_sharp,
+                                          controlerName: address,
+                                        ),
+                                        SizedBox(height: height * 0.01),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Select Gender:',
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                            SizedBox(height: height * 0.01),
+                                            RadioListTile(
+                                              title: Text("Male"),
+                                              value: "Male",
+                                              groupValue: selectedGender,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  selectedGender = value!;
+                                                });
+                                              },
+                                            ),
+                                            RadioListTile(
+                                              title: Text("Female"),
+                                              value: "Female",
+                                              groupValue: selectedGender,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  selectedGender = value!;
+                                                });
+                                              },
+                                            ),
+                                            SizedBox(height: height * 0.01),
+                                            Text(
+                                              'Selected: ${selectedGender}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: height * 0.01),
+                                        CustomTextFormFieldProfileUpdate(
+                                          name: "Number",
+                                          prefixIcon: Icons.call,
+                                          controlerName: number,
+                                        ),
+                                        SizedBox(height: height * 0.01),
+                                        CustomTextFormFieldProfileUpdate(
+                                          name: "username",
+                                          prefixIcon:
+                                              Icons.drive_file_rename_outline,
+                                          controlerName: username,
+                                        ),
+                                        SizedBox(height: height * 0.01),
+                                        CustomSignControlerButton(
+                                          onTap: () {
+                                            DataController.updateData(
+                                              name: name.text,
+                                              bio: bio.text,
+                                              adderss: address.text,
+                                              gender: selectedGender,
+                                              number: number.text,
+                                              username: username.text,
+                                              image:
+                                                  ImageController
+                                                      .profiledownloadImageurl,
+                                              cover_image:
+                                                  ImageController
+                                                      .coverdownloadImageurl,
+                                            );
+                                          },
+                                          showAvater: false,
+                                          text: "Done",
+                                          contenerColor: Colors.greenAccent,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -378,49 +336,67 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Positioned(
                     top: height * 0.18,
-                    right: width * 0.35,
+                    right: width * 0.40,
 
-                    child: Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 60,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey, width: 3),
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                  "${profileUser?.image ?? ImagesPath.networkImage}",
+                    child: Visibility(
+                      visible: DataController.isCerculerDataControler = true,
+                      replacement: CircularProgressIndicator(
+                        color: Colors.blue,
+                      ),
+
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 60,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 3,
                                 ),
-                                fit: BoxFit.contain,
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image:
+                                      _pickedImage != null
+                                          ? FileImage(_pickedImage!)
+                                          : NetworkImage(
+                                                profileUser?.image ??
+                                                    ImagesPath.networkImage,
+                                              )
+                                              as ImageProvider,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        profileChecker == false
-                            ? Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Icon(Icons.verified, color: Colors.green),
-                            )
-                            : Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  upProfileImage();
-                                },
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.red.shade100,
-                                  child: Icon(
-                                    Icons.camera_alt,
-                                    size: 30,
-                                    color: Colors.red,
+                          profileChecker == false
+                              ? Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Icon(
+                                  Icons.verified,
+                                  color: Colors.green,
+                                ),
+                              )
+                              : Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    upProfileImage();
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.red.shade100,
+                                    child: Icon(
+                                      Icons.camera_alt,
+                                      size: 30,
+                                      color: Colors.red,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -442,21 +418,58 @@ class _ProfilePageState extends State<ProfilePage> {
     name;
   }
 
-  void updateCoverImage() {}
-  void upProfileImage() {}
+  void updateCoverImage() {
+    _showImagePickerSheet();
+  }
+
+  void upProfileImage() {
+    _showImagePickerSheet();
+  }
+
   void profileUpdate() {
     clearControler();
   }
 
+  static Future<CroppedFile?> cropCustomImage(File imageFile) async {
+    return await ImageCropper().cropImage(
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      sourcePath: imageFile.path,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.blue,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+        ),
+      ],
+    );
+  }
+
   File? _pickedImage;
+  File? _coverPickedImage;
+  bool isCover = false;
   Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source);
-
     if (pickedFile != null) {
-      setState(() {
-        _pickedImage = File(pickedFile.path);
-      });
+      File originalImage = File(pickedFile.path);
+      CroppedFile? cropped = await cropCustomImage(originalImage);
+      if (cropped != null) {
+        File croppedFile = File(cropped.path);
+        setState(() {
+          if (isCover) {
+            _coverPickedImage = croppedFile;
+          } else {
+            _pickedImage = croppedFile;
+          }
+          Navigator.pop(context);
+        });
+      } else {
+        Navigator.pop(context);
+      }
+    } else {
+      Navigator.pop(context);
     }
   }
 
@@ -485,18 +498,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void updateData(String? email, String? keyName, String? value) async {
-    FirebaseFirestore instance = FirebaseFirestore.instance;
-    instance.collection("users").doc("$email").set({
-      "$keyName": "$value",
-    }, SetOptions(merge: true));
-    setState(() {});
-  }
-
   void loadUserData() async {
     DataController.isCerculerDataControler = true;
     var modelUsers = await DataController.getSignUsersData();
-    DataController.isCerculerDataControler = false;
 
     setState(() {
       profileUser = modelUsers;
@@ -508,6 +512,7 @@ class _ProfilePageState extends State<ProfilePage> {
       gender.text = profileUser?.bio ?? "You Bio";
       number.text = profileUser?.number ?? "You Number";
       username.text = profileUser?.username ?? "You username";
+      DataController.isCerculerDataControler = false;
     });
   }
 

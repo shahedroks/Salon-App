@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:crop_your_image/crop_your_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -28,7 +27,7 @@ class _ProfilePhotoPickerState extends State<ProfilePhotoPicker> {
     final size = MediaQuery.of(context).size;
     final width = size.width;
     final height = size.height;
-    final _controller = CropController();
+
     showModalBottomSheet(
       context: context,
       builder:

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../utils/assets_path.dart';
 
 class cover_image_widget extends StatelessWidget {
-  const cover_image_widget({super.key});
+  var coverImagePicked;
+  cover_image_widget({super.key, this.coverImagePicked});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,10 @@ class cover_image_widget extends StatelessWidget {
         height: height * 0.3,
         width: width,
         decoration: BoxDecoration(),
-        child: Image.asset("${ImagesPath.covoreImage}", fit: BoxFit.cover),
+        child:
+            coverImagePicked != null
+                ? Image.file(coverImagePicked, fit: BoxFit.cover)
+                : Image.asset("${ImagesPath.nullImage}", fit: BoxFit.cover),
       ),
     );
   }

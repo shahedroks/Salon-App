@@ -45,7 +45,8 @@ dependencies:
   flutter_rating:
   shared_preferences: ^2.5.3
   image_picker: ^1.1.2
-  crop_your_image: ^2.0.0
+  image_cropper: ^9.1.0
+
 
 
 dev_dependencies:

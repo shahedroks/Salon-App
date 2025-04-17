@@ -70,4 +70,31 @@ class DataController {
       return UsersModel.fromJson(doc.data() as Map<String, dynamic>);
     }).toList();
   }
+
+  static void updateData({
+    required String name,
+    required String bio,
+    required String adderss,
+    required String gender,
+    required String number,
+    required String username,
+    required String image,
+    required String cover_image,
+  }) async {
+    try {
+      FirebaseFirestore instance = FirebaseFirestore.instance;
+      instance.collection("users").doc("$email").set({
+        "bio": "$bio",
+        "name": "$name",
+        "address": "$adderss",
+        "gender": "$gender",
+        "number": "$number",
+        "username": "$username",
+        "image": "$image",
+        "cover_image": "$cover_image",
+      }, SetOptions(merge: true));
+    } catch (e) {
+      logger.e(e.toString());
+    }
+  }
 }
