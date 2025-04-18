@@ -39,6 +39,7 @@ dependencies:
   cloud_firestore:
   firebase_auth:
   firebase_storage: ^12.4.5
+  firebase_messaging:
   fluttertoast: ^8.2.12
   logger: ^2.5.0
   pin_code_fields: ^8.0.1

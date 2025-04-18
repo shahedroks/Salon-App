@@ -1,3 +1,5 @@
+import 'package:selon/utils/assets_path.dart';
+
 class UsersModel {
   final String? id;
   final String? name;
@@ -32,10 +34,10 @@ class UsersModel {
       username: json['username'] ?? "",
       email: json['email'] ?? "",
       number: json['number'] ?? "",
-      image: json['image'] ?? "",
+      image: json['image'] ?? "${ImagesPath.networkImage}",
       token: json['token'] ?? "",
       address: json['address'] ?? "",
-      cover_image: json['cover_image'] ?? "",
+      cover_image: json['cover_image'] ?? "${ImagesPath.nullImage}",
       bio: json['bio'] ?? "",
       gender: json['gender'] ?? "",
     );

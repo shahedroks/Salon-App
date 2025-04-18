@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:selon/model_controler/service_model.dart';
@@ -34,7 +32,10 @@ class ImageController {
     }
   }
 
-  static Future<String?> uploadImageToFirebase(File imageFile) async {
+  static Future<String?> uploadImageToFirebase({
+    required var imageFile,
+    required bool isCover,
+  }) async {
     try {
       // File name generate
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -51,7 +52,8 @@ class ImageController {
 
       // Get download URL
       String downloadUrl = await snapshot.ref.getDownloadURL();
-      return downloadImageurl = downloadUrl;
+
+      return downloadUrl;
     } catch (e) {
       print('Upload Error: $e');
       return null;

@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:selon/model_controler/users_model.dart';
-import 'package:selon/network_group/image_controler.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_sign_controler_button.dart';
-import 'package:selon/utils/assets_path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../network_group/data_controler.dart';
@@ -310,17 +308,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                           onTap: () {
                                             DataController.updateData(
                                               name: name.text,
+                                              email: email.text,
                                               bio: bio.text,
                                               adderss: address.text,
                                               gender: selectedGender,
                                               number: number.text,
                                               username: username.text,
-                                              image:
-                                                  ImageController
-                                                      .profiledownloadImageurl,
-                                              cover_image:
-                                                  ImageController
-                                                      .coverdownloadImageurl,
+                                              isCover: isCover,
+                                              coverFilePath: _coverPickedImage,
+                                              profileFilePath:
+                                                  _pickedProfileImage,
+                                              coverIamgeUrl:
+                                                  profileUser?.cover_image ??
+                                                  "",
+                                              profileImageUrl:
+                                                  profileUser?.image ?? "",
                                             );
                                           },
                                           showAvater: false,
@@ -357,11 +359,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   image:
-                                      _pickedImage != null
-                                          ? FileImage(_pickedImage!)
+                                      _pickedProfileImage != null
+                                          ? FileImage(
+                                            _pickedProfileImage as File,
+                                          )
                                           : NetworkImage(
-                                                profileUser?.image ??
-                                                    ImagesPath.networkImage,
+                                                profileUser?.image ?? "",
                                               )
                                               as ImageProvider,
                                   fit: BoxFit.cover,
@@ -446,7 +449,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  File? _pickedImage;
+  File? _pickedProfileImage;
   File? _coverPickedImage;
   bool isCover = false;
   Future<void> _pickImage(ImageSource source) async {
@@ -461,7 +464,7 @@ class _ProfilePageState extends State<ProfilePage> {
           if (isCover) {
             _coverPickedImage = croppedFile;
           } else {
-            _pickedImage = croppedFile;
+            _pickedProfileImage = croppedFile;
           }
           Navigator.pop(context);
         });

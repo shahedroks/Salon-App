@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:selon/model_controler/users_model.dart';
+import 'package:selon/network_group/image_controler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataController {
@@ -63,8 +66,13 @@ class DataController {
   }
 
   static Future<List<UsersModel>?> getAllUsers() async {
-    QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection("users").get();
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    String? email = sharedPref.getString("email");
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance
+            .collection("users")
+            .where("email", isNotEqualTo: email)
+            .get();
 
     return snapshot.docs.map((doc) {
       return UsersModel.fromJson(doc.data() as Map<String, dynamic>);
@@ -73,16 +81,43 @@ class DataController {
 
   static void updateData({
     required String name,
+    required String email,
     required String bio,
     required String adderss,
     required String gender,
     required String number,
     required String username,
-    required String image,
-    required String cover_image,
+    File? profileFilePath,
+    File? coverFilePath,
+    required String coverIamgeUrl,
+    required String profileImageUrl,
+    required bool isCover,
   }) async {
     try {
       FirebaseFirestore instance = FirebaseFirestore.instance;
+
+      String newProfileUrl = profileImageUrl;
+      String newCoverUrl = coverIamgeUrl;
+
+      if (profileFilePath != null) {
+        String? uploadProfileImage =
+            await ImageController.uploadImageToFirebase(
+              imageFile: profileFilePath,
+              isCover: false,
+            );
+        if (uploadProfileImage != null) {
+          newProfileUrl = uploadProfileImage;
+        }
+      }
+      if (coverFilePath != null) {
+        String? uploadcoverImage = await ImageController.uploadImageToFirebase(
+          imageFile: coverFilePath,
+          isCover: true,
+        );
+        if (uploadcoverImage != null) {
+          newCoverUrl = uploadcoverImage;
+        }
+      }
       instance.collection("users").doc("$email").set({
         "bio": "$bio",
         "name": "$name",
@@ -90,8 +125,8 @@ class DataController {
         "gender": "$gender",
         "number": "$number",
         "username": "$username",
-        "image": "$image",
-        "cover_image": "$cover_image",
+        "cover_image": "$coverIamgeUrl",
+        "image": "$profileImageUrl",
       }, SetOptions(merge: true));
     } catch (e) {
       logger.e(e.toString());
