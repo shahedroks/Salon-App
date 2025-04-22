@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:selon/network_group/data_controler.dart';
+import 'package:selon/utils/assets_path.dart';
 
 class CustomUpperPageview extends StatefulWidget {
   bool isPageChecker;
@@ -13,6 +14,7 @@ class CustomUpperPageview extends StatefulWidget {
 
 class _CustomUpperPageviewState extends State<CustomUpperPageview> {
   PageController _pageController = PageController();
+  List image = [ImagesPath.cardImage, ImagesPath.card2Image];
 
   @override
   void initState() {
@@ -40,27 +42,34 @@ class _CustomUpperPageviewState extends State<CustomUpperPageview> {
                   ),
                   child: PageView.builder(
                     controller: _pageController,
-                    itemCount: 4,
+                    itemCount: image.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        color: DataController.color[index],
+                        height: height,
+                        width: width,
+                        color:
+                            widget.isPageChecker == true
+                                ? Colors.transparent
+                                : DataController.color[index],
                         child: Center(
-                          child: Text(
-                            'Page ${index + 1}',
-                            style: TextStyle(fontSize: 32, color: Colors.white),
-                          ),
+                          child:
+                              widget.isPageChecker == true
+                                  ? Image.asset(
+                                    "${image[index]}",
+                                    fit: BoxFit.cover,
+                                  )
+                                  : Text(
+                                    'Page ${index + 1}',
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                         ),
                       );
                     },
                   ),
                 ),
-                widget.isPageChecker == true
-                    ? Positioned(
-                      right: 0,
-                      top: 50,
-                      child: Icon(Icons.arrow_forward_ios_outlined),
-                    )
-                    : Text(""),
               ],
             ),
           ),
@@ -104,7 +113,7 @@ class _CustomUpperPageviewState extends State<CustomUpperPageview> {
   pageChange(bool isChecker) {
     if (isChecker == true) {
       _timer = Timer.periodic(Duration(seconds: 5), (Timer timer) {
-        if (_currentPage < 3) {
+        if (_currentPage < 1) {
           _currentPage++;
         } else {
           _currentPage = 0;

@@ -9,6 +9,8 @@ class ImagesPath {
   static String OnBoarding4Image = "$asstesImage/OnBoarding4.png";
   static String covoreImage = "$asstesImage/Covore.png";
   static String nullImage = "$asstesImage/Null.jpeg";
+  static String cardImage = "$asstesImage/Card.png";
+  static String card2Image = "$asstesImage/Card2.png";
   static String networkImage =
       "https://i.pinimg.com/originals/6e/59/95/6e599501252c23bcf02658617b29c894.jpg";
 }
