@@ -6,10 +6,10 @@ import 'package:selon/model_controler/users_model.dart';
 import 'package:selon/network_group/data_controler.dart';
 import 'package:selon/network_group/image_controler.dart';
 import 'package:selon/pages/home_page/custom_wedget/custom_upper_pageview.dart';
-import 'package:selon/pages/home_page/profile_page.dart';
 import 'package:selon/pages/home_page/service_details_page.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
 
+import '../../utils/assets_path.dart';
 import 'custom_wedget/custom_navigetor_bar.dart';
 import 'massage_page.dart';
 import 'notification_page.dart';
@@ -126,8 +126,9 @@ class _UsersHomePageState extends State<UsersHomePage> {
                       ),
                       itemBuilder: (context, index) {
                         final service = serviceModel[index];
+
                         return GestureDetector(
-                          onTap: () => goToServiceDetails(),
+                          onTap: () => goToServiceDetails(index),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -178,7 +179,9 @@ class _UsersHomePageState extends State<UsersHomePage> {
                                     ),
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
-                                      image: NetworkImage("${service.image}"),
+                                      image: NetworkImage(
+                                        "${service.image != null && service.image!.isNotEmpty ? service.image : ImagesPath.networkImage}",
+                                      ),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -331,7 +334,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
 
   void loadServices() async {
     DataController.isCerculerDataControler = true;
-    List<ServiceModel> services = await ImageController.getService() ?? [];
+    List<ServiceModel> services = await ServiseController.getService() ?? [];
     setState(() {
       serviceModel = services;
       DataController.isCerculerDataControler = false;
@@ -339,25 +342,28 @@ class _UsersHomePageState extends State<UsersHomePage> {
   }
 
   void search() {}
-  void goToServiceDetails() {
+  void goToServiceDetails(index) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ServiceDetailsPage()),
+      MaterialPageRoute(
+        builder:
+            (context) => ServiceDetailsPage(id: serviceModel[index].id ?? ""),
+      ),
     );
   }
 
   void goToSalonDetails() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ServiceDetailsPage()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => ServiceDetailsPage()),
+    // );
   }
 
   void gotoToFlowerDetails() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ServiceDetailsPage()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => ServiceDetailsPage()),
+    // );
   }
 
   void goToNotificationPage() {
@@ -374,11 +380,13 @@ class _UsersHomePageState extends State<UsersHomePage> {
     );
   }
 
-  void gotoProfilePage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProfilePage()),
-    );
+  void gotoProfilePage() async {
+    final result = await Navigator.pushNamed(context, "/profile_page");
+
+    if (result == true) {
+      loadUser();
+      loadServices();
+    }
   }
 
   void goToButttonNevigationPage(index) {

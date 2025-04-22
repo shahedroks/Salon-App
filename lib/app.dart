@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:selon/pages/home_page/profile_page.dart';
 import 'package:selon/pages/home_page/users_home_page.dart';
 import 'package:selon/pages/onboarding_related_page/onboarding3_page.dart';
 import 'package:selon/pages/onboarding_related_page/onboarding4_page.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         "/onboarding2": (context) => OnbroardingPage2(), // users_home_page
         "/onboarding3": (context) => OnbroardingPage3(), // users_home_page
         "/onboarding4": (context) => OnbroardingPage4(), // users_home_page
+        "/profile_page": (context) => ProfilePage(),
       },
     );
   }

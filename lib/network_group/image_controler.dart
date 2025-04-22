@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:logger/logger.dart';
 import 'package:selon/model_controler/service_model.dart';
 
-class ImageController {
+class ServiseController {
+  static Logger logger = Logger();
   List<String> images = [];
   static String profiledownloadImageurl = "";
   static String coverdownloadImageurl = "";
@@ -52,7 +54,7 @@ class ImageController {
 
       // Get download URL
       String downloadUrl = await snapshot.ref.getDownloadURL();
-
+      logger.e(downloadUrl);
       return downloadUrl;
     } catch (e) {
       print('Upload Error: $e');

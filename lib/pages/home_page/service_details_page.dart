@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:selon/network_group/image_controler.dart';
 import 'package:selon/pages/home_page/custom_wedget/custom_upper_pageview.dart';
 
+import '../../model_controler/service_model.dart';
+
 class ServiceDetailsPage extends StatefulWidget {
-  const ServiceDetailsPage({super.key});
+  // List serviseDetailes;
+  String id;
+  ServiceDetailsPage({
+    super.key,
+    // required this.serviseDetailes,
+    required this.id,
+  });
 
   @override
   State<ServiceDetailsPage> createState() => _ServiceDetailsPageState();
@@ -39,7 +49,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Woman Medium Blunt Cut",
+                      "${servises?.name}",
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -132,5 +142,30 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadData();
+  }
+
+  ServiceModel? servises;
+  void loadData() async {
+    ServiceModel? result = await connectData();
+    setState(() {
+      servises = result;
+    });
+    Logger().e(servises?.name);
+  }
+
+  Future<ServiceModel?> connectData() async {
+    List<ServiceModel> services = await ServiseController.getService() ?? [];
+    Logger().e(widget.id);
+    try {
+      return services.firstWhere((item) => item.id == widget.id);
+    } catch (e) {
+      return null;
+    }
   }
 }

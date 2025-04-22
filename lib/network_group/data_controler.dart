@@ -101,7 +101,7 @@ class DataController {
 
       if (profileFilePath != null) {
         String? uploadProfileImage =
-            await ImageController.uploadImageToFirebase(
+            await ServiseController.uploadImageToFirebase(
               imageFile: profileFilePath,
               isCover: false,
             );
@@ -110,10 +110,11 @@ class DataController {
         }
       }
       if (coverFilePath != null) {
-        String? uploadcoverImage = await ImageController.uploadImageToFirebase(
-          imageFile: coverFilePath,
-          isCover: true,
-        );
+        String? uploadcoverImage =
+            await ServiseController.uploadImageToFirebase(
+              imageFile: coverFilePath,
+              isCover: true,
+            );
         if (uploadcoverImage != null) {
           newCoverUrl = uploadcoverImage;
         }
