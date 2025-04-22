@@ -7,6 +7,7 @@ import 'package:selon/network_group/data_controler.dart';
 import 'package:selon/network_group/image_controler.dart';
 import 'package:selon/pages/home_page/custom_wedget/custom_upper_pageview.dart';
 import 'package:selon/pages/home_page/service_details_page.dart';
+import 'package:selon/pages/home_page/users_profile_page.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
 
 import '../../utils/assets_path.dart';
@@ -168,7 +169,7 @@ class _UsersHomePageState extends State<UsersHomePage> {
                               horizontal: 8.0,
                             ),
                             child: GestureDetector(
-                              onTap: () => goToSalonDetails(),
+                              onTap: () => goToUsersProfile(),
                               child: CircleAvatar(
                                 radius: 30,
                                 child: Container(
@@ -352,11 +353,11 @@ class _UsersHomePageState extends State<UsersHomePage> {
     );
   }
 
-  void goToSalonDetails() {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => ServiceDetailsPage()),
-    // );
+  void goToUsersProfile() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => UsersProfilePage()),
+    );
   }
 
   void gotoToFlowerDetails() {
