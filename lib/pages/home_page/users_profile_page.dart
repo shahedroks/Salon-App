@@ -1,18 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:selon/model_controler/users_model.dart';
 import 'package:selon/utils/assets_path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../network_group/data_controler.dart';
-import '../sign_related_page/signin_page.dart';
-import 'custom_wedget/custom_cover_image.dart';
 
 class UsersProfilePage extends StatefulWidget {
-  const UsersProfilePage({super.key});
+  String email;
+  UsersProfilePage({super.key, required this.email});
 
   @override
   State<UsersProfilePage> createState() => _UsersProfilePageState();
@@ -49,7 +44,21 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
                 width: width,
                 child: Stack(
                   children: [
-                    cover_image_widget(coverImagePicked: _coverPickedImage),
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                      child: Container(
+                        height: height * 0.3,
+                        width: width,
+                        decoration: BoxDecoration(),
+                        child: Image.asset(
+                          "${ImagesPath.nullImage}",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                     Positioned(
                       top: height * 0.24,
                       left: 0,
@@ -77,78 +86,149 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Row(children: [Icon(Icons.settings)]),
-                                SizedBox(height: height * 0.05),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.05,
+                            child: Visibility(
+                              visible: dataChecker = true,
+                              replacement: CircularProgressIndicator(
+                                color: Colors.blue,
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(children: [Icon(Icons.settings)]),
+                                  SizedBox(height: height * 0.05),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.05,
+                                    ),
+                                    child: Text(
+                                      "${usersModel?.bio}",
+                                      style: const TextStyle(fontSize: 10),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                  child: Text(
-                                    "${profileUser?.bio}",
-                                    style: const TextStyle(fontSize: 10),
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                ListTile(
-                                  leading: const Icon(Icons.person),
-                                  title: const Text("Name"),
-                                  subtitle: Text("${profileUser?.name}"),
+                                  ListTile(
+                                    leading: const Icon(
+                                      MaterialIcons.sms,
+                                      color: Colors.blue,
+                                    ),
+                                    title: const Text(
+                                      "Massage",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
 
-                                  onTap: () {},
-                                ),
-                                ListTile(
-                                  leading: const Icon(Icons.email),
-                                  title: const Text("Email"),
-                                  subtitle: Text("${profileUser?.email}"),
-                                  trailing: const Icon(
-                                    Icons.verified_user_outlined,
-                                    color: Colors.green,
+                                    onTap: () {},
                                   ),
-                                  onTap: () {},
-                                ),
-                                ListTile(
-                                  leading: const Icon(
-                                    Icons.location_city_sharp,
+                                  Divider(),
+                                  ListTile(
+                                    leading: const Icon(
+                                      Fontisto.person,
+                                      color: Colors.blue,
+                                    ),
+                                    title: Text(
+                                      "${usersModel?.name}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+
+                                    onTap: () {},
                                   ),
-                                  title: const Text("Address"),
-                                  subtitle: Text("${profileUser?.address}"),
-                                  onTap: () {},
-                                ),
-                                ListTile(
-                                  leading: const Icon(Icons.man),
-                                  title: const Text("Gender"),
-                                  subtitle: Text("${profileUser?.name}"),
-                                  onTap: () {},
-                                ),
-                                ListTile(
-                                  leading: const Icon(Icons.call),
-                                  title: const Text("Number"),
-                                  subtitle: Text("${profileUser?.number}"),
-                                  trailing: const Icon(
-                                    Icons.verified_user_outlined,
-                                    color: Colors.green,
+                                  ListTile(
+                                    leading: const Icon(
+                                      MaterialIcons.email,
+                                      color: Colors.blue,
+                                    ),
+                                    title: Text(
+                                      "${usersModel?.email}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                    trailing: const Icon(
+                                      Icons.verified_user_outlined,
+                                      color: Colors.green,
+                                    ),
+                                    onTap: () {},
                                   ),
-                                  onTap: () {},
-                                ),
-                                ListTile(
-                                  leading: const Icon(
-                                    Icons.drive_file_rename_outline,
+                                  ListTile(
+                                    leading: const Icon(
+                                      MaterialIcons.call,
+                                      color: Colors.blue,
+                                    ),
+                                    title: Text(
+                                      "${profileUser?.number}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                    trailing: const Icon(
+                                      Icons.verified_user_outlined,
+                                      color: Colors.green,
+                                    ),
+                                    onTap: () {},
                                   ),
-                                  title: const Text("Username"),
-                                  subtitle: Text("${profileUser?.username}"),
-                                  onTap: () {},
-                                ),
-                                ListTile(
-                                  leading: const Icon(Icons.login),
-                                  title: const Text("Logout"),
-                                  onTap: () {
-                                    Logout();
-                                  },
-                                ),
-                              ],
+                                  ListTile(
+                                    leading: const Icon(
+                                      MaterialIcons.location_city,
+                                      color: Colors.blue,
+                                    ),
+                                    title: Text(
+                                      "${profileUser?.address}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                    trailing: const Icon(
+                                      Icons.verified_user_outlined,
+                                      color: Colors.green,
+                                    ),
+                                    onTap: () {},
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(
+                                      MaterialCommunityIcons.human,
+                                      color: Colors.blue,
+                                    ),
+                                    title: Text(
+                                      "${profileUser?.gender}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                    trailing: const Icon(
+                                      Icons.verified_user_outlined,
+                                      color: Colors.green,
+                                    ),
+                                    onTap: () {},
+                                  ),
+
+                                  ListTile(
+                                    leading: const Icon(
+                                      Fontisto.person,
+                                      color: Colors.blue,
+                                    ),
+                                    title: Text(
+                                      "${profileUser?.username}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                    trailing: const Icon(
+                                      Icons.verified_user_outlined,
+                                      color: Colors.green,
+                                    ),
+                                    onTap: () {},
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -212,169 +292,28 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    bio = TextEditingController();
-    name = TextEditingController();
-    address = TextEditingController();
-    email = TextEditingController();
-    number = TextEditingController();
-    username = TextEditingController();
-    loadUserData();
+    lodeUserData();
   }
 
-  void updateCoverImage() {
-    _showImagePickerSheet();
-  }
-
-  void upProfileImage() {
-    _showImagePickerSheet();
-  }
-
-  void profileUpdate() {
-    clearControler();
-  }
-
-  static Future<CroppedFile?> cropCustomImage(File imageFile) async {
-    return await ImageCropper().cropImage(
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-      sourcePath: imageFile.path,
-      uiSettings: [
-        AndroidUiSettings(
-          toolbarTitle: 'Crop Image',
-          toolbarColor: Colors.blue,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false,
-        ),
-      ],
-    );
-  }
-
-  File? _pickedProfileImage;
-  File? _coverPickedImage;
-  bool isCover = false;
-  Future<void> _pickImage(ImageSource source) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: source);
-    if (pickedFile != null) {
-      File originalImage = File(pickedFile.path);
-      CroppedFile? cropped = await cropCustomImage(originalImage);
-      if (cropped != null) {
-        File croppedFile = File(cropped.path);
-        setState(() {
-          if (isCover) {
-            _coverPickedImage = croppedFile;
-          } else {
-            _pickedProfileImage = croppedFile;
-          }
-          Navigator.pop(context);
-        });
-      } else {
-        Navigator.pop(context);
-      }
-    } else {
-      Navigator.pop(context);
-    }
-  }
-
-  void _showImagePickerSheet() {
-    showModalBottomSheet(
-      context: context,
-      builder:
-          (context) => Container(
-            height: 150,
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.camera_alt),
-                  title: const Text("Take from Camera"),
-                  onTap: () => _pickImage(ImageSource.camera),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.photo),
-                  title: const Text("Choose from Gallery"),
-                  onTap: () => _pickImage(ImageSource.gallery),
-                ),
-              ],
-            ),
-          ),
-    );
-  }
-
-  void loadUserData() async {
-    DataController.isCerculerDataControler = true;
-    var modelUsers = await DataController.getSignUsersData();
-
+  void lodeUserData() async {
+    dataChecker = true;
+    UsersModel? result = await getUserData();
     setState(() {
-      profileUser = modelUsers;
-
-      bio.text = profileUser?.bio ?? "You Bio";
-      name.text = profileUser?.name ?? "You Name";
-      email.text = profileUser?.email ?? "";
-      address.text = profileUser?.address ?? "You Address";
-      number.text = profileUser?.number ?? "You Number";
-      username.text = profileUser?.username ?? "You username";
-      DataController.isCerculerDataControler = false;
+      usersModel = result;
+      dataChecker = false;
     });
   }
 
-  void Logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Logout"),
-          content: const Text("Are you sure you want to logout?"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Cancel"),
-            ),
-            TextButton(
-              onPressed: () {
-                prefs.clear();
-                if (prefs.getString("email") == null) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SignInPage()),
-                    (predicate) => false,
-                  );
-                } else {
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text("Logout"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void updateProfileImage(String? email) async {}
-
-  void clearControler() {
-    bio.clear();
-    name.clear();
-    email.clear();
-    address.clear();
-    number.clear();
-    username.clear();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    bio.dispose();
-    name.dispose();
-    email.dispose();
-    address.dispose();
-    number.dispose();
-    username.dispose();
+  UsersModel? usersModel;
+  bool dataChecker = false;
+  Future<UsersModel?> getUserData() async {
+    dataChecker = true;
+    List<UsersModel> users = await DataController.getAllUsers() ?? [];
+    try {
+      return users.firstWhere((item) => item.email == widget.email);
+      dataChecker = false;
+    } catch (e) {
+      return null;
+    }
   }
 }

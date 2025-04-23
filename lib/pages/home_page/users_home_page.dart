@@ -159,38 +159,38 @@ class _UsersHomePageState extends State<UsersHomePage> {
                 SizedBox(height: height * 0.02),
                 Text("Who do you want to go with?"),
                 SizedBox(height: height * 0.02),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children:
-                        usersList.map((service) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                            ),
-                            child: GestureDetector(
-                              onTap: () => goToUsersProfile(),
-                              child: CircleAvatar(
-                                radius: 30,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.green,
-                                      width: 2,
-                                    ),
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        "${service.image != null && service.image!.isNotEmpty ? service.image : ImagesPath.networkImage}",
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
+                SizedBox(
+                  height: height * 0.08,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: usersList.length,
+                    itemBuilder: (context, index) {
+                      var users = usersList[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: GestureDetector(
+                          onTap: () => goToUsersProfile(index),
+                          child: CircleAvatar(
+                            radius: 30,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.green,
+                                  width: 2,
+                                ),
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    "${users.image != null && users.image!.isNotEmpty ? users.image : ImagesPath.networkImage}",
                                   ),
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
-                          );
-                        }).toList(),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(height: height * 0.02),
@@ -353,10 +353,13 @@ class _UsersHomePageState extends State<UsersHomePage> {
     );
   }
 
-  void goToUsersProfile() {
+  void goToUsersProfile(index) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => UsersProfilePage()),
+      MaterialPageRoute(
+        builder:
+            (context) => UsersProfilePage(email: "${usersList[index].email}"),
+      ),
     );
   }
 
