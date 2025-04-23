@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:selon/model_controler/users_model.dart';
+import 'package:selon/pages/chat_page/chat_page.dart';
 import 'package:selon/utils/assets_path.dart';
 
 import '../../network_group/data_controler.dart';
@@ -101,7 +102,7 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
                                     ),
                                     child: Text(
                                       "${usersModel?.bio}",
-                                      style: const TextStyle(fontSize: 10),
+                                      style: const TextStyle(fontSize: 12),
                                       maxLines: 3,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -118,7 +119,9 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
                                       ),
                                     ),
 
-                                    onTap: () {},
+                                    onTap: () {
+                                      goToChatPage();
+                                    },
                                   ),
                                   Divider(),
                                   ListTile(
@@ -136,6 +139,7 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
 
                                     onTap: () {},
                                   ),
+                                  Divider(),
                                   ListTile(
                                     leading: const Icon(
                                       MaterialIcons.email,
@@ -154,13 +158,14 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
                                     ),
                                     onTap: () {},
                                   ),
+                                  Divider(),
                                   ListTile(
                                     leading: const Icon(
                                       MaterialIcons.call,
                                       color: Colors.blue,
                                     ),
                                     title: Text(
-                                      "${profileUser?.number}",
+                                      "${usersModel?.number}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -172,59 +177,50 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
                                     ),
                                     onTap: () {},
                                   ),
+                                  Divider(),
                                   ListTile(
                                     leading: const Icon(
                                       MaterialIcons.location_city,
                                       color: Colors.blue,
                                     ),
                                     title: Text(
-                                      "${profileUser?.address}",
+                                      "${usersModel?.address}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-
-                                    trailing: const Icon(
-                                      Icons.verified_user_outlined,
-                                      color: Colors.green,
-                                    ),
                                     onTap: () {},
                                   ),
+                                  Divider(),
                                   ListTile(
-                                    leading: const Icon(
-                                      MaterialCommunityIcons.human,
+                                    leading: Icon(
+                                      usersModel?.gender == "male"
+                                          ? MaterialCommunityIcons.gender_male
+                                          : MaterialCommunityIcons
+                                              .gender_female,
                                       color: Colors.blue,
                                     ),
                                     title: Text(
-                                      "${profileUser?.gender}",
+                                      "${usersModel?.gender}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-
-                                    trailing: const Icon(
-                                      Icons.verified_user_outlined,
-                                      color: Colors.green,
-                                    ),
                                     onTap: () {},
                                   ),
-
+                                  Divider(),
                                   ListTile(
                                     leading: const Icon(
                                       Fontisto.person,
                                       color: Colors.blue,
                                     ),
                                     title: Text(
-                                      "${profileUser?.username}",
+                                      "${usersModel?.username}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
 
-                                    trailing: const Icon(
-                                      Icons.verified_user_outlined,
-                                      color: Colors.green,
-                                    ),
                                     onTap: () {},
                                   ),
                                 ],
@@ -287,6 +283,14 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
   }
 
   bool profileChecker = false;
+  UsersModel? usersModel;
+
+  void goToChatPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ChatPage(userdata: usersModel!)),
+    );
+  }
 
   @override
   void initState() {
@@ -304,7 +308,6 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
     });
   }
 
-  UsersModel? usersModel;
   bool dataChecker = false;
   Future<UsersModel?> getUserData() async {
     dataChecker = true;
