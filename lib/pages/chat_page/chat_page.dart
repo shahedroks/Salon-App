@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:selon/model_controler/users_model.dart';
+import 'package:selon/network_group/message_controle.dart';
 
 import '../../utils/assets_path.dart';
 
@@ -10,6 +11,8 @@ class ChatPage extends StatefulWidget {
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
+
+late TextEditingController sendMessageControler;
 
 class _ChatPageState extends State<ChatPage> {
   @override
@@ -123,6 +126,48 @@ class _ChatPageState extends State<ChatPage> {
           ],
         ),
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: sendMessageControler,
+                decoration: InputDecoration(hintText: 'Type a message...'),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.send),
+              onPressed: () {
+                sendMessage("${data.email}");
+              },
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  MessageControler _messageControler = MessageControler();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sendMessageControler = TextEditingController();
+  }
+
+  void sendMessage(String receiverID) async {
+    if (sendMessageControler.text.isNotEmpty) {
+      _messageControler.sendMessage(receiverID, sendMessageControler.text);
+      sendMessageControler.clear();
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    sendMessageControler.dispose();
   }
 }
