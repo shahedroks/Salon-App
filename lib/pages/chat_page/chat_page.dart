@@ -60,7 +60,66 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ],
             ),
+            SizedBox(height: heigth * 0.02),
             Divider(),
+            SizedBox(height: heigth * 0.03),
+            Row(
+              children: [
+                SizedBox(width: width * 0.02),
+                CircleAvatar(
+                  radius: 25,
+                  backgroundImage: NetworkImage(
+                    data.image != null && data.image!.isNotEmpty
+                        ? data.image!
+                        : ImagesPath.networkImage,
+                  ),
+                ),
+                SizedBox(width: width * 0.03),
+                Container(
+                  height: heigth * 0.05,
+                  width: width * 0.8,
+
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: heigth * 0.02),
+            Row(
+              children: [
+                SizedBox(width: width * 0.02),
+                Container(
+                  height: heigth * 0.05,
+                  width: width * 0.8,
+
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                ),
+                SizedBox(width: width * 0.03),
+
+                CircleAvatar(
+                  radius: 25,
+                  backgroundImage: NetworkImage(
+                    data.image != null && data.image!.isNotEmpty
+                        ? data.image!
+                        : ImagesPath.networkImage,
+                  ),
+                ),
+                SizedBox(width: width * 0.02),
+              ],
+            ),
           ],
         ),
       ),

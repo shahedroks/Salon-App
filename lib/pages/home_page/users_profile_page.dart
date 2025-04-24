@@ -14,14 +14,7 @@ class UsersProfilePage extends StatefulWidget {
   State<UsersProfilePage> createState() => _UsersProfilePageState();
 }
 
-late TextEditingController bio;
-late TextEditingController name;
-late TextEditingController address;
-late TextEditingController number;
-late TextEditingController username;
-
 UsersModel? profileUser;
-String selectedGender = '';
 
 class _UsersProfilePageState extends State<UsersProfilePage> {
   Future<bool> _onBackPressed(BuildContext context) async {
@@ -53,9 +46,8 @@ class _UsersProfilePageState extends State<UsersProfilePage> {
                       child: Container(
                         height: height * 0.3,
                         width: width,
-                        decoration: BoxDecoration(),
-                        child: Image.asset(
-                          "${ImagesPath.nullImage}",
+                        child: Image.network(
+                          "${profileUser?.image != null && profileUser!.image!.isNotEmpty ? profileUser?.image : ImagesPath.networkImage}",
                           fit: BoxFit.cover,
                         ),
                       ),
