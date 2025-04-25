@@ -15,23 +15,26 @@ class CustomLowerTextControlerSign extends StatelessWidget {
   Widget build(BuildContext context) {
     final sizeWidth = MediaQuery.of(context).size.width;
     final sizeHeight = MediaQuery.of(context).size.height;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text("$firstText"),
-        SizedBox(width: sizeWidth * 0.02),
-        InkWell(
-          onTap: onTap,
-          child: Text(
-            "$secondText",
-            style: TextStyle(
-              color: Color(0xff156778),
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 9),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("$firstText"),
+          SizedBox(width: sizeWidth * 0.02),
+          InkWell(
+            onTap: onTap,
+            child: Text(
+              "$secondText",
+              style: TextStyle(
+                color: Color(0xff156778),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

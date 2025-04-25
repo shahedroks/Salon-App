@@ -27,9 +27,9 @@ class OnbroardingPage2 extends StatelessWidget {
             children: [
               SizedBox(height: sizeHeight * 0.60),
               BoardingUpperText(
-                text1: "Meet Our Specialists",
+                text1: "Energize Your life ",
                 text2:
-                    "There are many best stylists from \n all the best salons ever",
+                    "Perfect for food & training\nyour body balance and endurance",
               ),
               SizedBox(height: sizeHeight * 0.15),
               DotIndicator(currentIndex: 1),

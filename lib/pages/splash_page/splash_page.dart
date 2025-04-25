@@ -29,8 +29,14 @@ class _SplashPageState extends State<SplashPage> {
       body: Center(
         child: Container(
           width: sizeWidth * 0.6,
-          height: sizeHeight * 0.1,
-          child: Image.asset(ImagesPath.logoImage, fit: BoxFit.cover),
+          height: sizeHeight * 0.4,
+          child: Column(
+            children: [
+              Image.asset(ImagesPath.logoImage, fit: BoxFit.cover),
+              SizedBox(width: sizeWidth * 0.03),
+              Image.asset(ImagesPath.logo1Image, fit: BoxFit.cover),
+            ],
+          ),
         ),
       ),
     );
