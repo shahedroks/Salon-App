@@ -51,13 +51,11 @@ class ServiseController {
       // Upload file
       UploadTask uploadTask = ref.putFile(imageFile);
       TaskSnapshot snapshot = await uploadTask;
-
       // Get download URL
       String downloadUrl = await snapshot.ref.getDownloadURL();
-      logger.e(downloadUrl);
       return downloadUrl;
-    } catch (e) {
-      print('Upload Error: $e');
+    } catch (e, s) {
+      logger.e(e);
       return null;
     }
   }

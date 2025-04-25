@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:selon/network_group/image_controler.dart';
 import 'package:selon/pages/home_page/custom_wedget/custom_upper_pageview.dart';
 
@@ -156,12 +155,10 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
     setState(() {
       servises = result;
     });
-    Logger().e(servises?.name);
   }
 
   Future<ServiceModel?> connectData() async {
     List<ServiceModel> services = await ServiseController.getService() ?? [];
-    Logger().e(widget.id);
     try {
       return services.firstWhere((item) => item.id == widget.id);
     } catch (e) {

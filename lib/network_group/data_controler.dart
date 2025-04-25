@@ -87,17 +87,17 @@ class DataController {
     required String gender,
     required String number,
     required String username,
+    required String profileurl,
+    required String covereurl,
     File? profileFilePath,
     File? coverFilePath,
-    required String coverIamgeUrl,
-    required String profileImageUrl,
     required bool isCover,
   }) async {
     try {
       FirebaseFirestore instance = FirebaseFirestore.instance;
 
-      String newProfileUrl = profileImageUrl;
-      String newCoverUrl = coverIamgeUrl;
+      String newProfileUrl = profileurl;
+      String newCoverUrl = covereurl;
 
       if (profileFilePath != null) {
         String? uploadProfileImage =
@@ -126,8 +126,8 @@ class DataController {
         "gender": "$gender",
         "number": "$number",
         "username": "$username",
-        "cover_image": "$coverIamgeUrl",
-        "image": "$profileImageUrl",
+        "cover_image": "$newCoverUrl",
+        "image": "$newProfileUrl",
       }, SetOptions(merge: true));
     } catch (e) {
       logger.e(e.toString());

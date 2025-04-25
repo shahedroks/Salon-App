@@ -51,7 +51,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 width: width,
                 child: Stack(
                   children: [
-                    cover_image_widget(coverImagePicked: _coverPickedImage),
+                    cover_image_widget(
+                      coverImagePicked: _coverPickedImage,
+                      coverImage: profileUser?.cover_image,
+                    ),
                     profileChecker == false
                         ? Text("")
                         : Positioned(
@@ -329,15 +332,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 number: number.text,
                                                 username: username.text,
                                                 isCover: isCover,
+                                                profileurl:
+                                                    profileUser?.image ?? "",
+                                                covereurl:
+                                                    profileUser?.cover_image ??
+                                                    "",
                                                 coverFilePath:
                                                     _coverPickedImage,
                                                 profileFilePath:
                                                     _pickedProfileImage,
-                                                coverIamgeUrl:
-                                                    profileUser?.cover_image ??
-                                                    "",
-                                                profileImageUrl:
-                                                    profileUser?.image ?? "",
                                               );
                                             },
                                             showAvater: false,

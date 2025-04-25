@@ -4,7 +4,8 @@ import '../../../utils/assets_path.dart';
 
 class cover_image_widget extends StatelessWidget {
   var coverImagePicked;
-  cover_image_widget({super.key, this.coverImagePicked});
+  var coverImage;
+  cover_image_widget({super.key, this.coverImagePicked, this.coverImage});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,9 @@ class cover_image_widget extends StatelessWidget {
         child:
             coverImagePicked != null
                 ? Image.file(coverImagePicked, fit: BoxFit.cover)
-                : Image.asset("${ImagesPath.nullImage}", fit: BoxFit.cover),
+                : Image.network(
+                  "${coverImage != null && coverImage.isNotEmpty ? coverImage : ImagesPath.networkImage}",
+                ),
       ),
     );
   }

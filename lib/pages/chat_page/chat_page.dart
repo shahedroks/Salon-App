@@ -92,61 +92,61 @@ class _ChatPageState extends State<ChatPage> {
                       itemBuilder: (context, index) {
                         MessageModel _messages = messages![index];
                         bool isMe = userID == _messages.senderId;
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          height: heigth * 0.05,
-                          width: width,
-                          child: Row(
-                            children: [
-                              SizedBox(width: width * 0.02),
-                              isMe == false
-                                  ? CircleAvatar(
-                                    radius: 25,
-                                    backgroundImage: NetworkImage(
-                                      data.image != null &&
-                                              data.image!.isNotEmpty
-                                          ? data.image!
-                                          : ImagesPath.networkImage,
-                                    ),
-                                  )
-                                  : Text(""),
-                              SizedBox(
-                                width: isMe ? width * 0.00 : width * 0.035,
-                              ),
-                              Container(
-                                height: heigth * 0.05,
-                                width: width * 0.8,
-
-                                decoration: BoxDecoration(
-                                  color: isMe ? Colors.blue : Colors.grey,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(isMe ? 20 : 0),
-                                    bottomRight: Radius.circular(isMe ? 0 : 20),
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
+                        return Row(
+                          children: [
+                            SizedBox(width: width * 0.02),
+                            isMe == false
+                                ? CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage: NetworkImage(
+                                    data.image != null && data.image!.isNotEmpty
+                                        ? data.image!
+                                        : ImagesPath.networkImage,
                                   ),
+                                )
+                                : Text(""),
+                            SizedBox(
+                              width: isMe ? width * 0.00 : width * 0.035,
+                            ),
+                            Container(
+                              width: width * 0.8,
+                              margin: EdgeInsets.symmetric(
+                                vertical: width * 0.03,
+                              ),
+                              padding: EdgeInsets.all(width * 0.003),
+                              decoration: BoxDecoration(
+                                color: isMe ? Colors.blue : Colors.grey,
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(isMe ? 20 : 0),
+                                  bottomRight: Radius.circular(isMe ? 0 : 20),
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
                                 ),
-                                child: Center(
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                     "${_messages.text}",
-                                    style: TextStyle(),
+                                    overflow: TextOverflow.visible,
+                                    softWrap: true,
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: width * 0.02),
-                              isMe == true
-                                  ? CircleAvatar(
-                                    radius: 25,
-                                    backgroundImage: NetworkImage(
-                                      data.image != null &&
-                                              data.image!.isNotEmpty
-                                          ? data.image!
-                                          : ImagesPath.networkImage,
-                                    ),
-                                  )
-                                  : Text(""),
-                            ],
-                          ),
+                            ),
+                            SizedBox(width: width * 0.02),
+                            isMe == true
+                                ? CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage: NetworkImage(
+                                    data.image != null && data.image!.isNotEmpty
+                                        ? data.image!
+                                        : ImagesPath.networkImage,
+                                  ),
+                                )
+                                : Text(""),
+                          ],
                         );
                       },
                     ),
