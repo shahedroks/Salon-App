@@ -29,7 +29,7 @@ class MessageControler {
   }
 
   // geting message
-  Stream<QuerySnapshot> getMessage(String userID, otherUserID) {
+  Stream<List<MessageModel>> getMessage(String userID, String otherUserID) {
     List<String> ids = [userID, otherUserID];
     ids.sort();
     String chatID = ids.join("_");
@@ -38,7 +38,17 @@ class MessageControler {
         .doc(chatID)
         .collection("message")
         .orderBy("timestamp", descending: false)
-        .snapshots();
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs
+                  .map(
+                    (doc) => MessageModel.fromJson(
+                      doc.data() as Map<String, dynamic>,
+                    ),
+                  )
+                  .toList(),
+        );
   }
 
   // List<Map<String,dynamic>> =
