@@ -14,6 +14,7 @@ class BoardingUpperText extends StatelessWidget {
         children: [
           Text(
             "$text1",
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 25,
               color: Colors.white,
@@ -21,7 +22,11 @@ class BoardingUpperText extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
-          Text("$text2", style: const TextStyle(color: Colors.white)),
+          Text(
+            "$text2",
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+          ),
         ],
       ),
     );

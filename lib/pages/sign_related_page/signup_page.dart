@@ -17,13 +17,13 @@ class SignUpPage extends StatefulWidget {
 
 ValitedChecker valitedChecker = ValitedChecker();
 AuthControler users = AuthControler();
-TextEditingController name = TextEditingController();
-TextEditingController email = TextEditingController();
-TextEditingController number = TextEditingController();
-TextEditingController password = TextEditingController();
-final GlobalKey<FormState> isFormKey2 = GlobalKey<FormState>();
+late TextEditingController name;
+late TextEditingController email;
+late TextEditingController number;
+late TextEditingController password;
 
 class _SignUpPageState extends State<SignUpPage> {
+  final GlobalKey<FormState> isFormKey2 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final sizeWidth = MediaQuery.of(context).size.width;
@@ -144,6 +144,16 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    name = TextEditingController();
+    email = TextEditingController();
+    number = TextEditingController();
+    password = TextEditingController();
   }
 
   void googleSignIn() {}

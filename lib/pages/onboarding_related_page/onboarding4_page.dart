@@ -26,7 +26,7 @@ class OnbroardingPage4 extends StatelessWidget {
               BoardingUpperText(
                 text1: "Let’s Join with Us",
                 text2:
-                    "Find and book Beauty, Salon, Barber /n and Spa services anywhere, anytime",
+                    "Find and book Beauty, Salon, Barber \n and Spa services anywhere, anytime",
               ),
               SizedBox(height: sizeHeight * 0.15),
               CustomSignControlerButton(

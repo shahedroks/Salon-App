@@ -5,7 +5,7 @@ import 'package:selon/model_controler/service_model.dart';
 import 'package:selon/model_controler/users_model.dart';
 import 'package:selon/network_group/data_controler.dart';
 import 'package:selon/network_group/image_controler.dart';
-import 'package:selon/pages/home_page/custom_wedget/custom_upper_pageview.dart';
+import 'package:selon/pages/home_page/custom_wedget/pie_chat.dart';
 import 'package:selon/pages/home_page/service_details_page.dart';
 import 'package:selon/pages/home_page/users_profile_page.dart';
 import 'package:selon/pages/sign_related_page/custom_widget/custom_upper_text_controler_sign.dart';
@@ -81,32 +81,32 @@ class _UsersHomePageState extends State<UsersHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: height * 0.05),
                 Row(
                   children: [
                     DataController.isCerculerDataControler == true
                         ? Center(child: CircularProgressIndicator())
                         : CustomUpperTextControlerSign(
                           firstText: "Hello, ${user?.name}",
-                          secondText:
-                              "Find the service you want, and treat yourself",
+                          secondText: "See your dally achievement",
                         ),
                     Spacer(),
-                    IconButton(
-                      onPressed: search,
-                      style: IconButton.styleFrom(
-                        backgroundColor: Color(0xff156778),
-                      ),
-                      icon: Icon(Icons.search, color: Colors.white, size: 35),
-                    ),
+                    // IconButton(
+                    //   onPressed: search,
+                    //   style: IconButton.styleFrom(
+                    //     backgroundColor: Color(0xff156778),
+                    //   ),
+                    //   icon: Icon(Icons.search, color: Colors.white, size: 35),
+                    // ),
                   ],
                 ),
                 SizedBox(height: height * 0.02),
-                SizedBox(
-                  height: height * 0.17,
-                  width: width,
-                  child: CustomUpperPageview(isPageChecker: true),
-                ),
+                PieChat(),
+                SizedBox(height: height * 0.02),
+                // SizedBox(
+                //   height: height * 0.17,
+                //   width: width,
+                //   child: CustomUpperPageview(isPageChecker: true),
+                // ),
                 SizedBox(height: height * 0.02),
                 Text("What do you want to do?"),
                 SizedBox(height: height * 0.02),

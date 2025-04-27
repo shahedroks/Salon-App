@@ -20,11 +20,11 @@ class SignInPage extends StatefulWidget {
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 ValitedChecker checker = ValitedChecker();
 AuthControler users = AuthControler();
-TextEditingController email = TextEditingController();
-TextEditingController password = TextEditingController();
-final GlobalKey<FormState> isFormKey1 = GlobalKey<FormState>();
+late TextEditingController email;
+late TextEditingController password;
 
 class _SignInPageState extends State<SignInPage> {
+  final GlobalKey<FormState> isFormKey1 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final sizeWidth = MediaQuery.of(context).size.width;
@@ -36,85 +36,91 @@ class _SignInPageState extends State<SignInPage> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: sizeHeight * 0.1),
-                CustomUpperTextControlerSign(
-                  firstText: "Welcome Back",
-                  secondText:
-                      "Glad to meet you again!, please login to use the app..",
-                ),
-                SizedBox(height: sizeHeight * 0.25),
-                TextFormField(
-                  controller: email,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    hintText: "Email",
+            child: Visibility(
+              visible: signChecker = true,
+              replacement: Center(
+                child: CircularProgressIndicator(color: Colors.blue),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: sizeHeight * 0.1),
+                  CustomUpperTextControlerSign(
+                    firstText: "Welcome Back",
+                    secondText:
+                        "Glad to meet you again!, please login to use the app..",
                   ),
-                  validator: (value) {
-                    final result = checker.onEmailChecker(value);
-                    checker.signChecker = true;
-                    print(checker.signChecker);
-                    return result;
-                  },
-                ),
-                SizedBox(height: sizeHeight * 0.02),
-                TextFormField(
-                  controller: password,
-                  obscureText: obscureText,
-                  validator: (value) {
-                    final result = checker.onPasswordChecker(value);
-                    checker.signChecker = true;
-                    return result;
-                  },
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    hintText: "Password",
-                    suffixIcon: IconButton(
-                      onPressed: () => visibilityButton(),
-                      icon:
-                          !obscureText
-                              ? Icon(Icons.visibility)
-                              : Icon(Icons.visibility_off),
+                  SizedBox(height: sizeHeight * 0.25),
+                  TextFormField(
+                    controller: email,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.email),
+                      hintText: "Email",
+                    ),
+                    validator: (value) {
+                      final result = checker.onEmailChecker(value);
+                      checker.signChecker = true;
+                      print(checker.signChecker);
+                      return result;
+                    },
+                  ),
+                  SizedBox(height: sizeHeight * 0.02),
+                  TextFormField(
+                    controller: password,
+                    obscureText: obscureText,
+                    validator: (value) {
+                      final result = checker.onPasswordChecker(value);
+                      checker.signChecker = true;
+                      return result;
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
+                      hintText: "Password",
+                      suffixIcon: IconButton(
+                        onPressed: () => visibilityButton(),
+                        icon:
+                            !obscureText
+                                ? Icon(Icons.visibility)
+                                : Icon(Icons.visibility_off),
+                      ),
                     ),
                   ),
-                ),
-                ForgetText(
-                  text: "Forget Password",
-                  onTap: () {
-                    gotoForgetPage(context);
-                  },
-                ),
-                SizedBox(height: sizeHeight * 0.05),
-                CustomSignControlerButton(
-                  onTap: () {
-                    signIn();
-                  },
-                  text: "Sign In",
-                  contenerColor: Color(0xff156778),
-                  textColor: Colors.white,
-                  showAvater: false,
-                ),
-                SizedBox(height: sizeHeight * 0.03),
-                CustomDivider(),
-                SizedBox(height: sizeHeight * 0.03),
-                CustomSignControlerButton(
-                  textColor: Color(0xff156778),
-                  text: "Sign In With Google",
-                  contenerColor: Colors.white,
-                  image: "${ImagesPath.googleImage}",
-                  onTap: googleSignIn,
-                ),
-                SizedBox(height: sizeHeight * 0.03),
-                CustomLowerTextControlerSign(
-                  firstText: "Don’t have an account?Don’t have an account?",
-                  secondText: "Join Now",
-                  onTap: () {
-                    Navigator.pushNamed(context, "/sign_up_page");
-                  },
-                ),
-              ],
+                  ForgetText(
+                    text: "Forget Password",
+                    onTap: () {
+                      gotoForgetPage(context);
+                    },
+                  ),
+                  SizedBox(height: sizeHeight * 0.05),
+                  CustomSignControlerButton(
+                    onTap: () {
+                      signIn();
+                    },
+                    text: "Sign In",
+                    contenerColor: Color(0xff156778),
+                    textColor: Colors.white,
+                    showAvater: false,
+                  ),
+                  SizedBox(height: sizeHeight * 0.03),
+                  CustomDivider(),
+                  SizedBox(height: sizeHeight * 0.03),
+                  CustomSignControlerButton(
+                    textColor: Color(0xff156778),
+                    text: "Sign In With Google",
+                    contenerColor: Colors.white,
+                    image: "${ImagesPath.googleImage}",
+                    onTap: googleSignIn,
+                  ),
+                  SizedBox(height: sizeHeight * 0.03),
+                  CustomLowerTextControlerSign(
+                    firstText: "Don’t have an account?Don’t have an account?",
+                    secondText: "Join Now",
+                    onTap: () {
+                      Navigator.pushNamed(context, "/sign_up_page");
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -122,15 +128,25 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    email = TextEditingController();
+    password = TextEditingController();
+  }
+
+  bool signChecker = false;
   void signIn() async {
     if (isFormKey1.currentState!.validate()) {
+      signChecker = true;
       users.signInAuth(
         email: email.text,
         password: password.text,
         context: context,
       );
-
       clearText();
+      signChecker = false;
     }
   }
 
